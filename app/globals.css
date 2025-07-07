@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  * {
+    cursor: none !important;
+  }
+  
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      cursor: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .glassmorphism {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
+
+/* Low Power Mode - Graceful Fallback */
+.low-power-mode {
+  --cursor-display: none;
+  --background-animations: none;
+}
+
+.low-power-mode .animated-background {
+  display: none !important;
+}
+
+.low-power-mode canvas {
+  display: none !important;
+}
+
+.low-power-mode * {
+  cursor: default !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+.low-power-mode .custom-cursor {
+  display: none !important;
+}
+
+.low-power-mode body {
+  background: radial-gradient(circle at 50% 50%, #1e293b, #0f172a) !important;
+}
+
+.low-power-mode .glassmorphism {
+  background: rgba(30, 41, 59, 0.8) !important;
+  backdrop-filter: none !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+}
+
+/* GPU-accelerated animations - only use transform and opacity */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Performance optimizations */
+.performance-optimized {
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .low-power-mode body {
+    background: #000 !important;
+  }
+  
+  .low-power-mode .glassmorphism {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid #fff !important;
+  }
+}
+
+/* Enhanced section backgrounds */
+.section-background {
+  position: relative;
+  isolation: isolate;
+}
+
+.section-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
+  z-index: -1;
+}
+
+.section-background-alt::before {
+  background: linear-gradient(225deg, rgba(16, 185, 129, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: auto; /* Override to use custom smooth scroll */
+}
+
+/* Enhanced cursor ring physics */
+.custom-cursor {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Elegant animations */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 3s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Enhanced glassmorphism */
+.glassmorphism {
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glassmorphism:hover {
+  background: rgba(30, 41, 59, 0.4);
+  border-color: rgba(148, 163, 184, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* 3D Transform Utilities */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Enhanced 3D animations */
+@keyframes float3d {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50% { transform: translateY(-10px) rotateX(5deg); }
+}
+
+@keyframes rotate3d {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.float-3d {
+  animation: float3d 3s ease-in-out infinite;
+}
+
+.rotate-3d {
+  animation: rotate3d 10s linear infinite;
+}
+
+/* Smooth 3D transitions */
+.tech-cube {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.tech-cube:hover {
+  transform: scale(1.1) rotateY(15deg) rotateX(15deg);
+}

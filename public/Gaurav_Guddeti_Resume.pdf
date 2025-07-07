@@ -1,0 +1,124 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman >>
+endobj
+5 0 obj
+<< /Length 2000 >>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(GAURAV GUDDETI) Tj
+0 -30 Td
+(AI/ML Developer & Full Stack Engineer) Tj
+0 -20 Td
+(gaurav.guddeti@example.com | LinkedIn: /in/gaurav-guddeti | GitHub: /gaurav-guddeti) Tj
+
+0 -40 Td
+/F1 14 Tf
+(EDUCATION) Tj
+0 -20 Td
+/F1 12 Tf
+(B.Tech in Computer Science Engineering) Tj
+0 -15 Td
+(Expected Graduation: 2025) Tj
+0 -15 Td
+(Relevant Coursework: Machine Learning, Data Structures, Algorithms, AI, Deep Learning) Tj
+
+0 -30 Td
+/F1 14 Tf
+(TECHNICAL SKILLS) Tj
+0 -20 Td
+/F1 12 Tf
+(Programming Languages: Python, JavaScript, TypeScript, Java, C++, R) Tj
+0 -15 Td
+(AI/ML Frameworks: TensorFlow, PyTorch, Scikit-learn, OpenCV, Pandas, NumPy) Tj
+0 -15 Td
+(Web Technologies: React, Next.js, Node.js, Express, MongoDB, PostgreSQL) Tj
+0 -15 Td
+(Cloud & DevOps: AWS, Docker, Git, GitHub Actions, Firebase) Tj
+0 -15 Td
+(Tools: VS Code, Jupyter, Google Colab, Figma, Postman) Tj
+
+0 -30 Td
+/F1 14 Tf
+(PROJECTS) Tj
+0 -20 Td
+/F1 12 Tf
+(AI-Powered Chatbot) Tj
+0 -15 Td
+(• Developed intelligent chatbot using NLP and machine learning) Tj
+0 -15 Td
+(• Implemented context-aware responses with 85% accuracy) Tj
+0 -15 Td
+(• Technologies: Python, TensorFlow, Flask, React) Tj
+
+0 -20 Td
+(Smart Home Automation System) Tj
+0 -15 Td
+(• Built IoT-based home automation with voice control) Tj
+0 -15 Td
+(• Integrated machine learning for predictive energy management) Tj
+0 -15 Td
+(• Technologies: Python, Arduino, React, Firebase) Tj
+
+0 -20 Td
+(E-commerce Platform) Tj
+0 -15 Td
+(• Full-stack e-commerce solution with AI-powered recommendations) Tj
+0 -15 Td
+(• Implemented secure payment processing and inventory management) Tj
+0 -15 Td
+(• Technologies: MERN Stack, Stripe API, JWT Authentication) Tj
+
+0 -30 Td
+/F1 14 Tf
+(EXPERIENCE) Tj
+0 -20 Td
+/F1 12 Tf
+(AI/ML Development Intern) Tj
+0 -15 Td
+(• Developed machine learning models for data analysis) Tj
+0 -15 Td
+(• Collaborated with cross-functional teams on AI solutions) Tj
+0 -15 Td
+(• Improved model accuracy by 20% through optimization) Tj
+
+0 -30 Td
+/F1 14 Tf
+(ACHIEVEMENTS) Tj
+0 -20 Td
+/F1 12 Tf
+(• Published research paper on AI applications in healthcare) Tj
+0 -15 Td
+(• Winner of university-level hackathon for AI innovation) Tj
+0 -15 Td
+(• Contributor to open-source ML libraries) Tj
+0 -15 Td
+(• Google Cloud Platform certification) Tj
+
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000058 00000 n
+0000000115 00000 n
+0000000245 00000 n
+0000000317 00000 n
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2369
+%%EOF
