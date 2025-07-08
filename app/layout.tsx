@@ -7,6 +7,7 @@ import { OptimizedCursor } from '@/components/ui/OptimizedCursor'
 import { BackgroundMusic } from '@/components/ui/BackgroundMusic'
 import { InteractiveCursorBackground } from '@/components/ui/InteractiveCursorBackground'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { VisualFallbackManager } from '@/components/utils/VisualFallbackManager'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-dark-900 text-white overflow-x-hidden`}>
+        <VisualFallbackManager />
         <ThemeProvider>
           <AudioProvider>
             <InteractiveCursorBackground />

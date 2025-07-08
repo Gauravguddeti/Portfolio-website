@@ -11,7 +11,7 @@ export const BackgroundMusic = () => {
 
   return (
     <motion.div
-      className="fixed bottom-4 right-4 z-50"
+      className="background-music fixed bottom-4 right-4 z-50"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 1.5, duration: 0.3 }}

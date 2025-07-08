@@ -259,10 +259,10 @@ export const InteractiveCursorBackground = () => {
   }, [isLowPowerMode, particles.length, floatingLogs.length, createParticle, createFloatingLog])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0">
+    <div className="interactive-cursor-bg background-canvas fixed inset-0 pointer-events-none z-0">
       <canvas
         ref={canvasRef}
-        className="w-full h-full opacity-30"
+        className="animated-particles particle-system w-full h-full opacity-30"
         style={{ background: 'transparent' }}
       />
     </div>

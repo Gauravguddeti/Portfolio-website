@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { TypewriterGlitch } from '@/components/ui/TypewriterGlitch'
 import { FloatingQuotes } from '@/components/ui/FloatingQuotes'
+import { ASCIIDonut } from '@/components/ui/ASCIIDonut'
 
 export const HeroSection = () => {
   const [greeting, setGreeting] = useState('')
@@ -70,62 +71,24 @@ export const HeroSection = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Interactive AI Energy Core Bubble */}
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        style={{
-          x: springX,
-          y: springY,
-        }}
-      >
+      {/* ASCII Donut Background Animation - Main Feature */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <motion.div
-          className="relative w-96 h-96 rounded-full"
+          className="ascii-donut-container"
+          style={{
+            x: springX,
+            y: springY,
+          }}
           animate={{
-            scale: [1, 1.02, 1],
-            rotate: [0, 1, 0],
+            scale: [1, 1.01, 1],
           }}
           transition={{
-            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-            rotate: { duration: 20, repeat: Infinity, ease: "linear" }
-          }}
-          style={{
-            background: 'radial-gradient(circle, rgba(0,191,255,0.1) 0%, rgba(59,130,246,0.05) 30%, transparent 70%)',
-            filter: 'blur(1px)',
+            scale: { duration: 8, repeat: Infinity, ease: "easeInOut" }
           }}
         >
-          {/* Inner Energy Waves */}
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute inset-0 rounded-full border border-primary-400/20"
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.3, 0, 0.3],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 1,
-                ease: "easeOut"
-              }}
-            />
-          ))}
-          
-          {/* Neural Pulse Effect */}
-          <motion.div
-            className="absolute inset-1/4 rounded-full"
-            animate={{
-              opacity: [0.4, 0.8, 0.4],
-              scale: [0.8, 1, 0.8],
-            }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              background: 'radial-gradient(circle, rgba(0,191,255,0.3) 0%, rgba(59,130,246,0.1) 50%, transparent 80%)',
-              boxShadow: '0 0 60px rgba(0,191,255,0.2), inset 0 0 40px rgba(59,130,246,0.1)'
-            }}
-          />
+          <ASCIIDonut />
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Floating Quotes */}
       <FloatingQuotes />

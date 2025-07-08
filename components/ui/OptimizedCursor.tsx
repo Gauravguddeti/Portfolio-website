@@ -51,7 +51,7 @@ export const OptimizedCursor = () => {
     <>
       {/* Inner dot - main cursor */}
       <motion.div
-        className="fixed pointer-events-none z-[9999] w-3 h-3 bg-primary-400 rounded-full shadow-lg"
+        className="cursor-physics custom-cursor fixed pointer-events-none z-[9999] w-3 h-3 bg-primary-400 rounded-full shadow-lg"
         style={{
           x: cursorX,
           y: cursorY,
@@ -63,7 +63,7 @@ export const OptimizedCursor = () => {
       
       {/* Ring that hangs on the inner circle like a ring on finger */}
       <motion.div
-        className="fixed pointer-events-none z-[9998] w-8 h-8 border-2 border-primary-400/60 rounded-full"
+        className="cursor-physics custom-cursor fixed pointer-events-none z-[9998] w-8 h-8 border-2 border-primary-400/60 rounded-full"
         style={{
           x: cursorX,
           y: cursorY,

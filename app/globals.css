@@ -47,6 +47,30 @@ body {
     text-wrap: balance;
   }
   
+  /* Performance optimizations for Arc Reactor */
+  .arc-reactor-rings {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  .arc-reactor-rings * {
+    transform: translateZ(0);
+  }
+  
+  /* Reduce motion for visual fallback mode */
+  .visual-fallback .arc-reactor-rings {
+    will-change: auto;
+    transform: none;
+  }
+  
+  .visual-fallback .arc-reactor-rings * {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
   .glassmorphism {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
@@ -78,38 +102,151 @@ body {
   background: #0284c7;
 }
 
-/* Low Power Mode - Graceful Fallback */
-.low-power-mode {
+/* Visual Fallback - Comprehensive Performance Fallback */
+.visual-fallback {
   --cursor-display: none;
   --background-animations: none;
 }
 
-.low-power-mode .animated-background {
+/* Mid-range device optimizations */
+.reduced-motion {
+  --animation-duration: 0.8s;
+  --transition-duration: 0.4s;
+}
+
+/* Hide all heavy visual elements EXCEPT ASCII donut (which is the main background) */
+.visual-fallback .animated-background,
+.visual-fallback .tech-rings-container,
+.visual-fallback .cursor-physics,
+.visual-fallback .particle-system,
+.visual-fallback .interactive-cursor-bg,
+.visual-fallback .arc-reactor-rings,
+.visual-fallback .mobile-hud,
+.visual-fallback .hero-particles,
+.visual-fallback .floating-elements,
+.visual-fallback .scanlines-effect,
+.visual-fallback .holographic-grid,
+.visual-fallback .background-canvas,
+.visual-fallback [class*="3d-objects"] {
   display: none !important;
 }
 
-.low-power-mode canvas {
+/* ASCII donut should remain visible in visual fallback mode as the main background */
+.ascii-donut-bg {
+  position: absolute;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.08);
+  z-index: -1;
+  pointer-events: none;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: pre;
+  user-select: none;
+}
+
+/* In visual fallback mode, make ASCII donut slightly more visible */
+.visual-fallback .ascii-donut-bg {
+  color: rgba(255, 255, 255, 0.12) !important;
+  display: block !important; /* Ensure it's not hidden */
+}
+
+/* Disable all canvas elements */
+.visual-fallback canvas {
   display: none !important;
 }
 
-.low-power-mode * {
+/* Remove all animations and transitions AGGRESSIVELY */
+.visual-fallback *,
+.visual-fallback *::before,
+.visual-fallback *::after {
   cursor: default !important;
   animation: none !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
   transition: none !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  transform: none !important;
+  will-change: auto !important;
+  backface-visibility: visible !important;
+  perspective: none !important;
+  transform-style: flat !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  mask: none !important;
+  clip-path: none !important;
 }
 
-.low-power-mode .custom-cursor {
+/* Exception: Allow simple hover transitions for interactivity */
+.visual-fallback [class*="hover:bg-gray-700"]:hover {
+  background-color: rgba(55, 65, 81, 0.4) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Disable all hover effects in visual fallback mode except essential ones */
+.visual-fallback *:hover {
+  transform: none !important;
+  scale: 1 !important;
+  animation: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Hide custom cursor */
+.visual-fallback .custom-cursor {
   display: none !important;
 }
 
-.low-power-mode body {
-  background: radial-gradient(circle at 50% 50%, #1e293b, #0f172a) !important;
+/* Simplified background with subtle gradient and default cursor */
+.visual-fallback body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%) !important;
+  cursor: default !important;
 }
 
-.low-power-mode .glassmorphism {
-  background: rgba(30, 41, 59, 0.8) !important;
+/* Enhanced glassmorphism for better visual appeal */
+.visual-fallback .glassmorphism {
+  background: rgba(30, 41, 59, 0.9) !important;
   backdrop-filter: none !important;
-  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Force static positioning for better performance */
+.visual-fallback .motion-div {
+  position: static !important;
+}
+
+/* Tab hidden optimizations */
+.tab-hidden .animated-background,
+.tab-hidden .tech-rings-container,
+.tab-hidden .ascii-donut-bg,
+.tab-hidden .particle-system {
+  animation-play-state: paused !important;
+  display: none !important;
+}
+
+/* Mobile-specific visual fallback optimizations */
+@media (max-width: 768px) {
+  .visual-fallback .desktop-only {
+    display: none !important;
+  }
+  
+  .visual-fallback .mobile-hud {
+    display: none !important;
+  }
+  
+  .visual-fallback .tech-section {
+    background: rgba(30, 41, 59, 0.4) !important;
+  }
+  
+  /* Better mobile touch targets in visual fallback mode */
+  .visual-fallback button,
+  .visual-fallback [class*="hover:bg-gray-700"] {
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+  }
 }
 
 /* GPU-accelerated animations - only use transform and opacity */
@@ -256,4 +393,19 @@ html {
 
 .tech-cube:hover {
   transform: scale(1.1) rotateY(15deg) rotateX(15deg);
+}
+
+/* ASCII Donut Background Styling */
+.ascii-donut-bg {
+  position: absolute;
+  font-family: monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.05);
+  z-index: -1;
+  pointer-events: none;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: pre;
+  user-select: none;
 }
