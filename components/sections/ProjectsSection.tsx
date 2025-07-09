@@ -46,6 +46,16 @@ const projects = [
     impact: "30% faster"
   },
   {
+    title: "Khaaozy",
+    description: "Smart Canteen Management System for educational institutions",
+    longDescription: "A comprehensive multi-platform canteen management solution featuring AI-powered menu parsing, real-time order management, and role-based access control. Streamlines canteen operations with intelligent inventory tracking and automated billing systems.",
+    demo: null,
+    github: "https://github.com/Gauravguddeti/khaaozy/tree/main",
+    tags: ["React", "Node.js", "AI", "Management System", "Real-time", "MongoDB"],
+    status: "Live",
+    impact: "Multi-platform"
+  },
+  {
     title: "Jarvis AI",
     description: "Personal AI assistant with voice recognition and task automation",
     longDescription: "Multi-modal AI assistant capable of voice recognition, natural language processing, and task automation. Integrates with various APIs and services for comprehensive personal productivity management.",
