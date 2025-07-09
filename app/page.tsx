@@ -8,12 +8,12 @@ import { SectionDivider } from '@/components/ui/SectionDivider'
 import { SectionBackground } from '@/components/ui/SectionBackground'
 import { ScrollAnimationWrapper } from '@/components/ui/ScrollAnimationWrapper'
 
-// Lazy load heavy sections
+// Lazy load heavy sections with better loading states
 const AboutSection = dynamic(() => import('@/components/sections/AboutSection2').then(mod => ({ default: mod.AboutSection })), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-screen bg-gradient-to-b from-dark-800 to-dark-900 animate-pulse flex items-center justify-center">
-      <div className="text-gray-400">Loading About Section...</div>
+    <div className="w-full min-h-[50vh] bg-gradient-to-b from-dark-800 to-dark-900 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-400"></div>
     </div>
   )
 })
@@ -21,8 +21,8 @@ const AboutSection = dynamic(() => import('@/components/sections/AboutSection2')
 const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection').then(mod => ({ default: mod.ProjectsSection })), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-screen bg-gradient-to-b from-dark-900 to-dark-800 animate-pulse flex items-center justify-center">
-      <div className="text-gray-400">Loading Projects...</div>
+    <div className="w-full min-h-[50vh] bg-gradient-to-b from-dark-900 to-dark-800 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-400"></div>
     </div>
   )
 })

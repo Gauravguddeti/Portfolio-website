@@ -163,24 +163,24 @@ const ASCIIDonutComponent = () => {
       id="ascii-donut"
       style={{
         position: 'absolute',
-        fontFamily: 'monospace',
-        fontSize: '14px', // Increased for better visibility
-        color: 'rgba(255, 255, 255, 0.08)', // Increased opacity for visibility
-        zIndex: -1,
+        fontFamily: 'Courier New, monospace',
+        fontSize: '12px',
+        color: 'rgba(255, 255, 255, 0.08)',
+        zIndex: 0, // Proper z-index for layering
         pointerEvents: 'none',
-        top: '20%', // Position from top as specified
+        top: '50%',
         left: '50%',
-        transform: 'translateX(-50%) translateZ(0)', 
+        transform: 'translate(-50%, -50%) translateZ(0)', 
         whiteSpace: 'pre',
         userSelect: 'none',
         willChange: 'contents',
-        display: 'block', // Changed from flex to block
+        display: 'block',
         width: 'auto',
         height: 'auto',
-        lineHeight: '1.2'
+        lineHeight: '1'
       }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: isVisible ? 0.08 : 0 }} // Increased opacity
+      animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
       {donutFrames[currentFrame]}
@@ -194,20 +194,20 @@ const StaticDonutFallback = () => (
        id="ascii-donut-static"
        style={{ 
          position: 'absolute',
-         fontFamily: 'monospace',
-         fontSize: '14px', // Increased for visibility
-         color: 'rgba(255, 255, 255, 0.08)', // Increased opacity
-         zIndex: -1,
+         fontFamily: 'Courier New, monospace',
+         fontSize: '12px',
+         color: 'rgba(255, 255, 255, 0.08)',
+         zIndex: 0, // Proper z-index
          pointerEvents: 'none',
-         top: '20%', // Position from top
+         top: '50%',
          left: '50%',
-         transform: 'translateX(-50%)',
+         transform: 'translate(-50%, -50%)',
          whiteSpace: 'pre',
          userSelect: 'none',
          display: 'block',
          width: 'auto',
          height: 'auto',
-         lineHeight: '1.2'
+         lineHeight: '1'
        }}>
     <pre>{`
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -241,23 +241,24 @@ const StaticDonutFallback = () => (
 
 export const ASCIIDonut = () => {
   const [hasJavaScript, setHasJavaScript] = useState(false)
-  const [shouldRender, setShouldRender] = useState(false)
+  const [isLowPower, setIsLowPower] = useState(false)
 
   useEffect(() => {
     setHasJavaScript(true)
-    // Check if device can handle the animation
-    const connection = (navigator as any).connection
-    const isLowPower = navigator.userAgent.includes('Mobile') && 
-                      (window.screen.width < 414 || 
-                       navigator.hardwareConcurrency < 4 ||
-                       connection?.effectiveType === 'slow-2g' ||
-                       connection?.effectiveType === '2g')
+    // Check if in low-power mode
+    setIsLowPower(document.body.classList.contains('low-power-mode'))
     
-    setShouldRender(!isLowPower)
+    // Listen for low-power mode changes
+    const observer = new MutationObserver(() => {
+      setIsLowPower(document.body.classList.contains('low-power-mode'))
+    })
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+    
+    return () => observer.disconnect()
   }, [])
 
-  // Fallback for no JS or low-power devices
-  if (!hasJavaScript || !shouldRender) {
+  // Always render animated donut unless in low-power mode
+  if (!hasJavaScript || isLowPower) {
     return <StaticDonutFallback />
   }
 

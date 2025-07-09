@@ -1,22 +1,24 @@
 'use client'
 
 import { useEffect } from 'react'
-import { isVisualFallbackRequired } from '@/utils/performanceDetection'
+import { isLowPowerMode } from '@/utils/performanceDetection'
 
 /**
- * Simple visual fallback manager
- * Runs detection once on client-side and applies .visual-fallback class if needed
- * No UI, no warnings, completely silent
+ * Low-power mode manager
+ * Automatically detects low-end devices and applies .low-power-mode class
+ * Shows indicator when fallback mode is active
  */
 export function VisualFallbackManager() {
   useEffect(() => {
-    // Only run detection once when component mounts
-    const shouldUseFallback = isVisualFallbackRequired()
+    // Run detection once when component mounts
+    const shouldUseLowPowerMode = isLowPowerMode()
     
-    if (shouldUseFallback) {
-      document.body.classList.add('visual-fallback')
-      // Silent console log for debugging (remove in production if needed)
-      console.log('Visual fallback enabled for optimal performance')
+    if (shouldUseLowPowerMode) {
+      document.body.classList.add('low-power-mode')
+      console.log('🔋 Low-power mode enabled for optimal performance')
+    } else {
+      document.body.classList.remove('low-power-mode')
+      console.log('⚡ High-power mode enabled')
     }
 
     // Tab visibility handling for performance
@@ -32,21 +34,21 @@ export function VisualFallbackManager() {
     
     // Development utilities
     if (process.env.NODE_ENV === 'development') {
-      (window as any).toggleVisualFallback = () => {
-        document.body.classList.toggle('visual-fallback')
-        const isEnabled = document.body.classList.contains('visual-fallback')
-        console.log('Visual fallback:', isEnabled ? 'ENABLED' : 'DISABLED')
+      (window as any).toggleLowPowerMode = () => {
+        document.body.classList.toggle('low-power-mode')
+        const isEnabled = document.body.classList.contains('low-power-mode')
+        console.log('🔋 Low-power mode:', isEnabled ? 'ENABLED' : 'DISABLED')
       }
       
-      (window as any).checkVisualFallback = () => {
-        const isEnabled = document.body.classList.contains('visual-fallback')
-        console.log('Visual fallback status:', isEnabled ? 'ENABLED' : 'DISABLED')
+      (window as any).checkLowPowerMode = () => {
+        const isEnabled = document.body.classList.contains('low-power-mode')
+        console.log('🔋 Low-power mode status:', isEnabled ? 'ENABLED' : 'DISABLED')
         return isEnabled
       }
       
       console.log('🧪 Dev tools available:')
-      console.log('- window.toggleVisualFallback() - Toggle visual fallback mode')
-      console.log('- window.checkVisualFallback() - Check current status')
+      console.log('- window.toggleLowPowerMode() - Toggle low-power mode')
+      console.log('- window.checkLowPowerMode() - Check current status')
     }
     
     return () => {

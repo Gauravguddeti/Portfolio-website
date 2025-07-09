@@ -71,15 +71,21 @@ const getTimeBasedMessages = () => {
   
   let timeMessages = []
   
-  // Time of day
-  if (hour >= 6 && hour < 12) {
-    timeMessages.push("Good morning, builder! ☀️", "Early bird codes the worm.", "Dawn of a new algorithm.")
-  } else if (hour >= 12 && hour < 17) {
-    timeMessages.push("Afternoon productivity mode.", "Midday debugging session.", "Lunch break = code break.")
-  } else if (hour >= 17 && hour < 21) {
-    timeMessages.push("Evening grind mode ☕", "Golden hour coding.", "Sunset, sunrise, code.")
+  // Time of day with more detailed greetings
+  if (hour >= 5 && hour < 8) {
+    timeMessages.push("Early commit worm activated 🪱", "Dawn of debugging begins.", "5 AM: the sacred coding hour.")
+  } else if (hour >= 8 && hour < 12) {
+    timeMessages.push("Deploying caffeine patch ☕", "Morning algorithm warm-up.", "Pre-lunch productivity spike.")
+  } else if (hour >= 12 && hour < 14) {
+    timeMessages.push("Debugging lunch mode 🍜", "Midday stack overflow.", "Lunch break = code break.")
+  } else if (hour >= 14 && hour < 18) {
+    timeMessages.push("Afternoon slump... CPU throttled 😴", "Post-lunch code coma.", "Coffee break needed.")
+  } else if (hour >= 18 && hour < 22) {
+    timeMessages.push("Evening grind mode 💻", "Golden hour coding.", "Sunset, sunrise, code.")
+  } else if (hour >= 22 || hour < 2) {
+    timeMessages.push("Late-night coding session detected 🌙", "Night owl in full swing.", "Peak creativity time.")
   } else {
-    timeMessages.push("Midnight oil mode activated.", "Night owl detected.", "3 AM: peak creativity time.")
+    timeMessages.push("Why are you even here? Go to sleep. 😵‍💫", "2-5 AM: The void stares back.", "Error 418: You should be sleeping.")
   }
   
   // Day of week

@@ -19,16 +19,25 @@ export const HeroSection = () => {
   useEffect(() => {
     const updateGreeting = () => {
       const hour = new Date().getHours()
+      let newGreeting = ''
       
-      if (hour >= 6 && hour < 12) {
-        setGreeting("Good morning, builder ☀️")
-      } else if (hour >= 12 && hour < 17) {
-        setGreeting("Let's build something cool.")
-      } else if (hour >= 17 && hour < 21) {
-        setGreeting("Evening grind mode ☕")
+      if (hour >= 5 && hour < 8) {
+        newGreeting = 'Early commit worm activated 🪱'
+      } else if (hour >= 8 && hour < 12) {
+        newGreeting = 'Deploying caffeine patch ☕'
+      } else if (hour >= 12 && hour < 14) {
+        newGreeting = 'Debugging lunch mode 🍜'
+      } else if (hour >= 14 && hour < 18) {
+        newGreeting = 'Afternoon slump... CPU throttled 😴'
+      } else if (hour >= 18 && hour < 22) {
+        newGreeting = 'Evening grind mode 💻'
+      } else if (hour >= 22 || hour < 2) {
+        newGreeting = 'Late-night coding session detected 🌙'
       } else {
-        setGreeting("Midnight oil mode activated.")
+        newGreeting = 'Why are you even here? Go to sleep. 😵‍💫'
       }
+      
+      setGreeting(newGreeting)
     }
 
     updateGreeting()
@@ -67,14 +76,14 @@ export const HeroSection = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900"
+      className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-dark-900 via-dark-800 to-dark-900"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* ASCII Donut Background Animation - Main Feature */}
+      {/* ASCII Donut Background Animation - Behind everything but above base background */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
         <motion.div
-          className="ascii-donut-container"
+          className="ascii-donut-container relative"
           style={{
             x: springX,
             y: springY,
@@ -96,7 +105,7 @@ export const HeroSection = () => {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-900/10 to-dark-900/70 z-10" />
 
-      {/* Content */}
+      {/* Content - Highest z-index to ensure visibility */}
       <div className="relative z-20 text-center max-w-4xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -104,7 +113,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8 }}
           className="mb-6"
         >
-          <h1 className="text-sm md:text-base text-primary-400 mb-2 font-mono">
+          <h1 className="text-sm md:text-base text-primary-400 mb-2 font-mono relative z-2">
             {greeting}
           </h1>
         </motion.div>
@@ -113,7 +122,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-300 bg-clip-text text-transparent"
+          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-300 bg-clip-text text-transparent relative z-2"
         >
           Gaurav Guddeti
         </motion.h1>
@@ -124,7 +133,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-8"
         >
-          <p className="text-lg md:text-xl text-gray-300 mb-6">
+          <p className="text-lg md:text-xl text-gray-300 mb-6 relative z-2">
             Artificial Intelligence · Machine Learning · Full Stack Developer
           </p>
           
@@ -140,14 +149,14 @@ export const HeroSection = () => {
         >
           <button
             onClick={() => scrollToSection('projects')}
-            className="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-primary-500/25"
+            className="relative z-2 px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-primary-500/25"
             data-cursor="neural"
           >
             View Projects
           </button>
           <button
             onClick={() => scrollToSection('contact')}
-            className="px-8 py-3 border-2 border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-dark-900 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+            className="relative z-2 px-8 py-3 border-2 border-primary-400 text-primary-400 hover:bg-primary-400 hover:text-dark-900 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
             data-cursor="neural"
           >
             Contact Me

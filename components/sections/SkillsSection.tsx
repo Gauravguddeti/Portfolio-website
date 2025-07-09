@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 import { DevToolsTable } from '@/components/ui/DevToolsTable'
 import { FloatingQuotes } from '@/components/ui/FloatingQuotes'
 
@@ -28,6 +29,21 @@ const skills = [
 ]
 
 export const SkillsSection = () => {
+  const [isVisualFallback, setIsVisualFallback] = useState(false)
+
+  useEffect(() => {
+    // Check if visual fallback mode is active
+    const checkFallbackMode = () => {
+      setIsVisualFallback(document.body.classList.contains('visual-fallback'))
+    }
+    
+    // Check initially and on DOM changes
+    checkFallbackMode()
+    const observer = new MutationObserver(checkFallbackMode)
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+    
+    return () => observer.disconnect()
+  }, [])
   return (
     <section id="skills" className="py-20 bg-gradient-to-b from-dark-900 to-dark-800 relative overflow-hidden">
       {/* Background Pattern */}
@@ -61,7 +77,8 @@ export const SkillsSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.1, rotate: 5 }}
+                // Only apply hover effects if not in visual fallback mode
+                whileHover={!isVisualFallback ? { scale: 1.1, rotate: 5 } : {}}
                 className="group tech-item"
                 data-cursor="tech"
                 title={`${skill.name} - ${skill.description}`}
@@ -106,7 +123,7 @@ export const SkillsSection = () => {
               {skills.slice(0, 8).map((skill, index) => (
                 <div
                   key={skill.name}
-                  className={`absolute w-16 h-16 glassmorphism rounded-full flex items-center justify-center text-2xl animate-float`}
+                  className={`absolute w-16 h-16 glassmorphism rounded-full flex items-center justify-center text-2xl animate-float skills-cloud-item`}
                   style={{
                     transform: `rotate(${index * 45}deg) translate(80px) rotate(-${index * 45}deg)`,
                     animationDelay: `${index * 0.2}s`

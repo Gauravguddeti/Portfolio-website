@@ -69,6 +69,7 @@ export const ArcReactorTechStack = () => {
   const [currentLogIndex, setCurrentLogIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [isLowPowerMode, setIsLowPowerMode] = useState(false)
+  const [isVisualFallback, setIsVisualFallback] = useState(false)
   const [isReducedMode, setIsReducedMode] = useState(false)
   
   // Motion values - optimized for performance
@@ -91,6 +92,7 @@ export const ArcReactorTechStack = () => {
   useEffect(() => {
     const checkLowPowerMode = () => {
       setIsLowPowerMode(document.body.classList.contains('low-power-mode'))
+      setIsVisualFallback(document.body.classList.contains('visual-fallback'))
     }
     
     const checkReducedMode = () => {
@@ -348,13 +350,12 @@ export const ArcReactorTechStack = () => {
                     return (
                       <motion.div
                         key={tech.name}
-                        className="absolute cursor-pointer z-10"
+                        className="absolute cursor-pointer z-10 tech-item"
                         style={{
                           left: '50%',
                           top: '50%',
                           transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`,
                         }}
-                        whileHover={{ scale: 1.2 }}
                         onMouseEnter={() => setHoveredTech(tech.name)}
                         onMouseLeave={() => setHoveredTech(null)}
                       >
@@ -370,10 +371,12 @@ export const ArcReactorTechStack = () => {
                               : '0 4px 15px rgba(0,0,0,0.3), inset 0 0 10px rgba(255,255,255,0.1)',
                           }}
                           animate={{ 
-                            rotate: -angle
+                            rotate: -angle,
+                            scale: hoveredTech === tech.name && !isVisualFallback ? 1.2 : 1
                           }}
                           transition={{ 
-                            rotate: { type: "spring", stiffness: 300, damping: 30 }
+                            rotate: { type: "spring", stiffness: 300, damping: 30 },
+                            scale: { duration: 0.2, ease: "easeOut" }
                           }}
                         >
                           <span className="drop-shadow-lg">{tech.icon}</span>
@@ -409,13 +412,12 @@ export const ArcReactorTechStack = () => {
                     return (
                       <motion.div
                         key={tech.name}
-                        className="absolute cursor-pointer z-10"
+                        className="absolute cursor-pointer z-10 tech-item"
                         style={{
                           left: '50%',
                           top: '50%',
                           transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`,
                         }}
-                        whileHover={{ scale: 1.3 }}
                         onMouseEnter={() => setHoveredTech(tech.name)}
                         onMouseLeave={() => setHoveredTech(null)}
                       >
@@ -431,10 +433,12 @@ export const ArcReactorTechStack = () => {
                               : '0 0 10px rgba(8,145,178,0.3), inset 0 0 5px rgba(8,145,178,0.15)',
                           }}
                           animate={{ 
-                            rotate: 360
+                            rotate: 360,
+                            scale: hoveredTech === tech.name && !isVisualFallback ? 1.3 : 1
                           }}
                           transition={{ 
-                            rotate: { duration: 18, repeat: Infinity, ease: "linear" }
+                            rotate: { duration: 18, repeat: Infinity, ease: "linear" },
+                            scale: { duration: 0.2, ease: "easeOut" }
                           }}
                         >
                           <span className="drop-shadow-lg">{tech.icon}</span>
@@ -470,13 +474,12 @@ export const ArcReactorTechStack = () => {
                     return (
                       <motion.div
                         key={tech.name}
-                        className="absolute cursor-pointer z-10"
+                        className="absolute cursor-pointer z-10 tech-item"
                         style={{
                           left: '50%',
                           top: '50%',
                           transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`,
                         }}
-                        whileHover={{ scale: 1.2 }}
                         onMouseEnter={() => setHoveredTech(tech.name)}
                         onMouseLeave={() => setHoveredTech(null)}
                       >
@@ -492,10 +495,12 @@ export const ArcReactorTechStack = () => {
                               : '0 0 8px rgba(59,130,246,0.4), inset 0 0 4px rgba(59,130,246,0.2)',
                           }}
                           animate={{ 
-                            rotate: -360
+                            rotate: -360,
+                            scale: hoveredTech === tech.name && !isVisualFallback ? 1.2 : 1
                           }}
                           transition={{ 
-                            rotate: { duration: 15, repeat: Infinity, ease: "linear" }
+                            rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+                            scale: { duration: 0.2, ease: "easeOut" }
                           }}
                         >
                           <span className="drop-shadow-sm">{tech.icon}</span>

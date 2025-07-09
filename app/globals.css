@@ -4,8 +4,26 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 214,/* ASCII donut should remain visible in visual fallback mode as the main background */
+.ascii-donut-bg {
+  position: absolute;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.08);
+  z-index: 2; /* Higher z-index to ensure visibility */
+  pointer-events: none;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: pre;
+  user-select: none;
+}
+
+/* In visual fallback mode, make ASCII donut slightly more visible */
+.visual-fallback .ascii-donut-bg {
+  color: rgba(255, 255, 255, 0.15) !important; /* Increased visibility */
+  display: block !important; /* Ensure it's not hidden */
+}ground-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,14 +49,21 @@ body {
     scroll-behavior: smooth;
   }
   
+  /* Custom cursor enabled by default for desktop */
   * {
     cursor: none !important;
   }
   
+  /* Only disable custom cursor on touch devices or low-power mode */
   @media (hover: none) and (pointer: coarse) {
     * {
       cursor: auto !important;
     }
+  }
+  
+  /* Disable custom cursor in low-power mode only */
+  .low-power-mode * {
+    cursor: auto !important;
   }
 }
 
@@ -102,74 +127,98 @@ body {
   background: #0284c7;
 }
 
-/* Visual Fallback - Comprehensive Performance Fallback */
-.visual-fallback {
+/* Low Power Mode - Comprehensive Performance Fallback */
+.low-power-mode {
   --cursor-display: none;
   --background-animations: none;
 }
 
-/* Mid-range device optimizations */
-.reduced-motion {
-  --animation-duration: 0.8s;
-  --transition-duration: 0.4s;
-}
-
-/* Hide all heavy visual elements EXCEPT ASCII donut (which is the main background) */
-.visual-fallback .animated-background,
-.visual-fallback .tech-rings-container,
-.visual-fallback .cursor-physics,
-.visual-fallback .particle-system,
-.visual-fallback .interactive-cursor-bg,
-.visual-fallback .arc-reactor-rings,
-.visual-fallback .mobile-hud,
-.visual-fallback .hero-particles,
-.visual-fallback .floating-elements,
-.visual-fallback .scanlines-effect,
-.visual-fallback .holographic-grid,
-.visual-fallback .background-canvas,
-.visual-fallback [class*="3d-objects"] {
+/* Hide all heavy visual elements in low-power mode */
+.low-power-mode .animated-background,
+.low-power-mode .tech-rings-container,
+.low-power-mode .cursor-physics,
+.low-power-mode .particle-system,
+.low-power-mode .interactive-cursor-bg,
+.low-power-mode .arc-reactor,
+.low-power-mode .arc-reactor-rings,
+.low-power-mode .mobile-hud,
+.low-power-mode .hero-particles,
+.low-power-mode .floating-elements,
+.low-power-mode .scanlines-effect,
+.low-power-mode .holographic-grid,
+.low-power-mode .background-canvas,
+.low-power-mode .canvas-background,
+.low-power-mode .hero-bubble,
+.low-power-mode [class*="3d-objects"] {
   display: none !important;
 }
 
-/* ASCII donut should remain visible in visual fallback mode as the main background */
+/* ASCII donut styling - visible by default, proper z-index */
 .ascii-donut-bg {
   position: absolute;
-  font-family: monospace;
-  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.08);
-  z-index: -1;
+  z-index: 0; /* Behind hero text but above backgrounds */
   pointer-events: none;
-  top: 20%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   white-space: pre;
   user-select: none;
+  line-height: 1;
+  width: auto;
+  height: auto;
+  display: block; /* Always visible by default */
 }
 
-/* In visual fallback mode, make ASCII donut slightly more visible */
-.visual-fallback .ascii-donut-bg {
+/* In low-power mode, make ASCII donut slightly more visible as main background */
+.low-power-mode .ascii-donut-bg {
   color: rgba(255, 255, 255, 0.12) !important;
-  display: block !important; /* Ensure it's not hidden */
+  font-size: 14px !important;
 }
 
-/* Disable all canvas elements */
-.visual-fallback canvas {
+/* Disable all canvas elements in low-power mode */
+.low-power-mode canvas {
   display: none !important;
 }
 
-/* Remove all animations and transitions AGGRESSIVELY */
-.visual-fallback *,
-.visual-fallback *::before,
-.visual-fallback *::after {
-  cursor: default !important;
+/* Show static tech grid only in low-power mode */
+.static-tech-grid {
+  display: none;
+}
+
+.low-power-mode .static-tech-grid {
+  display: block !important;
+}
+
+/* Hide arc reactor in low-power mode, show grid instead */
+.low-power-mode .arc-reactor-container {
+  display: none !important;
+}
+
+/* Low power indicator - only visible in low-power mode */
+.low-power-indicator {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: none;
+}
+
+.low-power-mode .low-power-indicator {
+  display: block !important;
+}
+
+/* Remove all animations and effects in low-power mode */
+.low-power-mode *:not(.tech-item):not(.static-tech-grid *),
+.low-power-mode *:not(.tech-item)::before,
+.low-power-mode *:not(.tech-item)::after {
   animation: none !important;
   animation-duration: 0s !important;
   animation-delay: 0s !important;
   animation-iteration-count: 1 !important;
-  transition: none !important;
-  transition-duration: 0s !important;
-  transition-delay: 0s !important;
-  transform: none !important;
+  transition: opacity 0.2s ease !important; /* Keep basic transitions for UX */
   will-change: auto !important;
   backface-visibility: visible !important;
   perspective: none !important;
@@ -180,18 +229,50 @@ body {
   clip-path: none !important;
 }
 
+/* Ensure hero text is always above donut */
+.hero-section .relative {
+  z-index: 1;
+}
+
+.hero-section h1,
+.hero-section p,
+.hero-section button {
+  position: relative;
+  z-index: 2;
+}
+
+/* Completely preserve tech stack positioning and allow minimal hover effects */
+.visual-fallback .tech-item,
+.visual-fallback [style*="transform"] {
+  /* Tech items keep their positioning but disable heavy animations */
+  pointer-events: auto;
+}
+
+/* Disable only heavy animations for tech items, preserve positioning */
+.visual-fallback .tech-item {
+  animation: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease !important;
+}
+
+/* Allow basic hover effects for tech items without disrupting position */
+.visual-fallback .tech-item:hover {
+  /* Keep positioning intact, only allow color changes */
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
 /* Exception: Allow simple hover transitions for interactivity */
 .visual-fallback [class*="hover:bg-gray-700"]:hover {
   background-color: rgba(55, 65, 81, 0.4) !important;
   transition: background-color 0.2s ease !important;
 }
 
-/* Disable all hover effects in visual fallback mode except essential ones */
+/* Disable hover transforms while preserving positioning */
 .visual-fallback *:hover {
-  transform: none !important;
+  /* Disable scale and rotate on hover but keep positioning */
   scale: 1 !important;
+  rotate: none !important;
   animation: none !important;
-  transition: background-color 0.2s ease !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 /* Hide custom cursor */
@@ -395,17 +476,101 @@ html {
   transform: scale(1.1) rotateY(15deg) rotateX(15deg);
 }
 
-/* ASCII Donut Background Styling */
-.ascii-donut-bg {
-  position: absolute;
-  font-family: monospace;
+/* ASCII Donut Background Styling - Removed duplicate, see above for main styles */
+
+/* Skills Cloud - Preserve circular positioning even in visual fallback mode */
+.visual-fallback .skills-cloud-item {
+  /* Preserve the inline style transform for positioning */
+  animation: none !important;
+}
+
+.visual-fallback .skills-cloud-item:hover {
+  /* Only allow subtle hover effects without breaking positioning */
+  animation: none !important;
+  scale: 1.05 !important;
+  transition: scale 0.2s ease !important;
+}
+
+/* Normal mode - better hover effects for skills cloud */
+.skills-cloud-item:hover {
+  scale: 1.1 !important;
+  transition: scale 0.2s ease !important;
+  z-index: 10 !important;
+}
+
+/* Additional CSS to ensure ASCII donut is never hidden */
+.ascii-donut-container {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+}
+
+/* Debug visibility - temporarily boost donut visibility in dev mode */
+/* Remove this in production if not needed */
+.development .ascii-donut-bg {
+  border: 1px solid rgba(255, 0, 0, 0.1); /* Visual debug border */
+}
+
+/* Ensure hero content grid doesn't interfere with donut */
+.hero-section > * {
+  position: relative;
+}
+
+/* Hero text should always be above donut */
+.hero-section .relative.z-20 {
+  z-index: 20 !important;
+}
+
+.hero-section .relative.z-20 * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure no parent containers clip the donut */
+.hero-section {
+  contain: none !important; /* Prevent container from clipping contents */
+}
+
+/* Media query for very small devices */
+@media (max-width: 480px) {
+  .ascii-donut-bg {
+    font-size: 8px !important;
+    transform: translate(-50%, -50%) scale(0.8) !important;
+  }
+  
+  .low-power-mode .ascii-donut-bg {
+    font-size: 10px !important;
+  }
+}
+
+/* Enhanced static tech grid styling for low-power mode */
+.static-tech-grid .tech-tile {
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+}
+
+.static-tech-grid .tech-tile:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+.static-tech-grid .tech-tile img,
+.static-tech-grid .tech-tile .tech-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 8px;
+  display: block;
+}
+
+.static-tech-grid .tech-tile span {
+  display: block;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.05);
-  z-index: -1;
-  pointer-events: none;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: pre;
-  user-select: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
 }

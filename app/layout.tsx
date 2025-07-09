@@ -3,11 +3,16 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { AudioProvider } from '@/components/providers/AudioProvider'
-import { OptimizedCursor } from '@/components/ui/OptimizedCursor'
-import { BackgroundMusic } from '@/components/ui/BackgroundMusic'
-import { InteractiveCursorBackground } from '@/components/ui/InteractiveCursorBackground'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { LowPowerIndicator } from '@/components/ui/LowPowerIndicator'
 import { VisualFallbackManager } from '@/components/utils/VisualFallbackManager'
+import { PerformanceTracker } from '@/components/utils/PerformanceTracker'
+import { ServiceWorkerRegistration } from '@/components/utils/ServiceWorkerRegistration'
+import { 
+  DynamicOptimizedCursor, 
+  DynamicBackgroundMusic, 
+  DynamicInteractiveCursorBackground 
+} from '@/components/utils/DynamicComponents'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,11 +50,14 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-dark-900 text-white overflow-x-hidden`}>
         <VisualFallbackManager />
+        <PerformanceTracker />
+        <ServiceWorkerRegistration />
+        <LowPowerIndicator />
         <ThemeProvider>
           <AudioProvider>
-            <InteractiveCursorBackground />
-            <OptimizedCursor />
-            <BackgroundMusic />
+            <DynamicInteractiveCursorBackground />
+            <DynamicOptimizedCursor />
+            <DynamicBackgroundMusic />
             <ThemeToggle />
             {children}
           </AudioProvider>
