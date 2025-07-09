@@ -4,26 +4,8 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214,/* ASCII donut should remain visible in visual fallback mode as the main background */
-.ascii-donut-bg {
-  position: absolute;
-  font-family: monospace;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.08);
-  z-index: 2; /* Higher z-index to ensure visibility */
-  pointer-events: none;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: pre;
-  user-select: none;
-}
-
-/* In visual fallback mode, make ASCII donut slightly more visible */
-.visual-fallback .ascii-donut-bg {
-  color: rgba(255, 255, 255, 0.15) !important; /* Increased visibility */
-  display: block !important; /* Ensure it's not hidden */
-}ground-end-rgb: 255, 255, 255;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -476,101 +458,102 @@ html {
   transform: scale(1.1) rotateY(15deg) rotateX(15deg);
 }
 
-/* ASCII Donut Background Styling - Removed duplicate, see above for main styles */
-
-/* Skills Cloud - Preserve circular positioning even in visual fallback mode */
-.visual-fallback .skills-cloud-item {
-  /* Preserve the inline style transform for positioning */
-  animation: none !important;
-}
-
-.visual-fallback .skills-cloud-item:hover {
-  /* Only allow subtle hover effects without breaking positioning */
-  animation: none !important;
-  scale: 1.05 !important;
-  transition: scale 0.2s ease !important;
-}
-
-/* Normal mode - better hover effects for skills cloud */
-.skills-cloud-item:hover {
-  scale: 1.1 !important;
-  transition: scale 0.2s ease !important;
-  z-index: 10 !important;
-}
-
-/* Additional CSS to ensure ASCII donut is never hidden */
-.ascii-donut-container {
-  position: relative;
+/* ASCII Donut Background Styling */
+#ascii-donut {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: monospace;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.06);
+  opacity: 0.06;
+  white-space: pre;
+  pointer-events: none;
   z-index: 0;
-  isolation: isolate;
+  user-select: none;
 }
 
-/* Debug visibility - temporarily boost donut visibility in dev mode */
-/* Remove this in production if not needed */
-.development .ascii-donut-bg {
-  border: 1px solid rgba(255, 0, 0, 0.1); /* Visual debug border */
+/* Static fallback donut */
+#ascii-donut-static {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: monospace;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.06);
+  opacity: 0.06;
+  white-space: pre;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
 }
 
-/* Ensure hero content grid doesn't interfere with donut */
-.hero-section > * {
-  position: relative;
+/* Custom Physics Cursor */
+.custom-cursor-inner,
+.custom-cursor-outer {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+  transition: transform 0.15s ease-out;
 }
 
-/* Hero text should always be above donut */
-.hero-section .relative.z-20 {
-  z-index: 20 !important;
+.custom-cursor-inner {
+  width: 8px;
+  height: 8px;
+  background: #00ffff;
+  mix-blend-mode: difference;
 }
 
-.hero-section .relative.z-20 * {
-  position: relative;
-  z-index: 1;
+.custom-cursor-outer {
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  mix-blend-mode: difference;
 }
 
-/* Ensure no parent containers clip the donut */
-.hero-section {
-  contain: none !important; /* Prevent container from clipping contents */
+/* Hide default cursor when custom cursor is active */
+body:not(.low-power-mode) {
+  cursor: none !important;
 }
 
-/* Media query for very small devices */
-@media (max-width: 480px) {
-  .ascii-donut-bg {
-    font-size: 8px !important;
-    transform: translate(-50%, -50%) scale(0.8) !important;
+body:not(.low-power-mode) * {
+  cursor: none !important;
+}
+
+/* Show default cursor on mobile and low-power mode */
+.low-power-mode,
+.low-power-mode * {
+  cursor: auto !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  body, body * {
+    cursor: auto !important;
   }
   
-  .low-power-mode .ascii-donut-bg {
-    font-size: 10px !important;
+  .custom-cursor-inner,
+  .custom-cursor-outer {
+    display: none !important;
   }
 }
 
-/* Enhanced static tech grid styling for low-power mode */
-.static-tech-grid .tech-tile {
-  transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 12px;
-  text-align: center;
-  backdrop-filter: blur(5px);
+/* Disable animations and custom cursor in low-power mode */
+.low-power-mode .custom-cursor-inner,
+.low-power-mode .custom-cursor-outer {
+  display: none !important;
 }
 
-.static-tech-grid .tech-tile:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(59, 130, 246, 0.5);
-  transform: translateY(-2px);
+.low-power-mode #ascii-donut {
+  display: none !important;
 }
 
-.static-tech-grid .tech-tile img,
-.static-tech-grid .tech-tile .tech-icon {
-  width: 24px;
-  height: 24px;
-  margin: 0 auto 8px;
-  display: block;
-}
-
-.static-tech-grid .tech-tile span {
-  display: block;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
+/* Tab hidden optimizations */
+.tab-hidden #ascii-donut,
+.tab-hidden .custom-cursor-inner,
+.tab-hidden .custom-cursor-outer {
+  animation-play-state: paused !important;
+  opacity: 0.01 !important;
 }

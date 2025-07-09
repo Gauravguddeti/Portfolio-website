@@ -4,157 +4,90 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { motion } from 'framer-motion'
 
 const ASCIIDonutComponent = () => {
-  const [donutFrames, setDonutFrames] = useState<string[]>([])
-  const [currentFrame, setCurrentFrame] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const canvasRef = useRef<HTMLPreElement>(null)
-  const animationRef = useRef<number>()
+  const intervalRef = useRef<NodeJS.Timeout>()
 
-  // Generate ASCII donut frames
-  const generateDonutFrames = () => {
-    const frames: string[] = []
-    const frameCount = 60 // Smooth 60 frame animation
+  useEffect(() => {
+    const donut = canvasRef.current
+    if (!donut) return
+
+    let A = 0, B = 0
     
-    for (let frame = 0; frame < frameCount; frame++) {
-      const A = frame * 0.1 // Rotation around X-axis
-      const B = frame * 0.07 // Rotation around Z-axis
-      
-      const cosA = Math.cos(A), sinA = Math.sin(A)
-      const cosB = Math.cos(B), sinB = Math.sin(B)
-      
-      const width = 60 // Increased size for main background
-      const height = 30
-      const output: string[] = Array(height).fill('').map(() => ' '.repeat(width))
-      const zbuffer: number[] = Array(width * height).fill(0)
-      
-      // Generate donut
-      for (let theta = 0; theta < 6.28; theta += 0.07) { // Circle around tube
-        const cosTheta = Math.cos(theta), sinTheta = Math.sin(theta)
-        
-        for (let phi = 0; phi < 6.28; phi += 0.02) { // Circle around donut
-          const cosPhi = Math.cos(phi), sinPhi = Math.sin(phi)
-          
-          // 3D coordinates (before rotation)
-          const circleX = cosTheta
-          const circleY = sinTheta
-          const circleZ = 0
-          
-          // Apply rotations
-          const x = circleX * (cosB * cosPhi + sinA * sinB * sinPhi) - circleY * cosA * sinB
-          const y = circleX * (sinB * cosPhi - sinA * cosB * sinPhi) + circleY * cosA * cosB
-          const z = cosA * circleX * sinPhi + circleY * sinA + 4
-          
-          const ooz = 1 / z // One over Z (for perspective)
-          
-          // Project to 2D with larger scale
-          const xp = Math.floor(width / 2 + 20 * ooz * x) // Increased scale
-          const yp = Math.floor(height / 2 + 10 * ooz * y) // Increased scale
-          
-          if (xp >= 0 && xp < width && yp >= 0 && yp < height) {
-            const idx = xp + yp * width
-            if (ooz > zbuffer[idx]) {
-              zbuffer[idx] = ooz
-              
-              // Calculate luminance for character selection
-              const luminance = cosPhi * cosTheta * sinB - cosA * cosTheta * sinPhi - 
-                               sinA * sinTheta + cosB * (cosA * sinTheta - cosTheta * sinA * sinPhi)
-              
-              const luminanceIndex = Math.floor(luminance * 8)
-              const chars = '.,-~:;=!*#$@'
-              const char = chars[Math.max(0, Math.min(chars.length - 1, luminanceIndex + 5))]
-              
-              // Update output array
-              const line = output[yp].split('')
-              line[xp] = char
-              output[yp] = line.join('')
-            }
+    const animate = () => {
+      let b: string[] = []
+      let z: number[] = []
+      A += 0.07
+      B += 0.03
+
+      const width = 60, height = 22
+      const background = ' '
+      const chars = '.,-~:;=!*#$@'
+
+      for (let k = 0; k < width * height; k++) {
+        b[k] = background
+        z[k] = 0
+      }
+
+      for (let j = 0; j < 6.28; j += 0.07) {
+        for (let i = 0; i < 6.28; i += 0.02) {
+          const c = Math.sin(i)
+          const d = Math.cos(j)
+          const e = Math.sin(A)
+          const f = Math.sin(j)
+          const g = Math.cos(A)
+          const h = d + 2
+          const D = 1 / (c * h * e + f * g + 5)
+          const l = Math.cos(i)
+          const m = Math.cos(B)
+          const n = Math.sin(B)
+          const t = c * h * g - f * e
+          const x = Math.floor(width / 2 + width * 0.4 * D * (l * h * m - t * n))
+          const y = Math.floor(height / 2 + height * 0.2 * D * (l * h * n + t * m))
+          const o = x + width * y
+          const N = Math.floor(8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n))
+          if (height > y && y > 0 && x > 0 && width > x && D > z[o]) {
+            z[o] = D
+            b[o] = chars[Math.max(0, N)]
           }
         }
       }
-      
-      frames.push(output.join('\n'))
-    }
-    
-    return frames
-  }
 
-  // Initialize donut animation
-  useEffect(() => {
-    console.log('🍩 ASCIIDonut: Generating frames...')
-    const frames = generateDonutFrames()
-    setDonutFrames(frames)
-    console.log('🍩 ASCIIDonut: Generated', frames.length, 'frames')
-  }, [])
-
-  // Animation loop with RAF for smooth 60fps
-  useEffect(() => {
-    if (!isVisible || donutFrames.length === 0) {
-      console.log('🍩 ASCIIDonut: Animation paused -', { isVisible, frameCount: donutFrames.length })
-      return
-    }
-
-    console.log('🍩 ASCIIDonut: Starting animation loop')
-    let lastTime = 0
-    const targetFPS = 15 // Slower for ASCII effect
-    const frameInterval = 1000 / targetFPS
-
-    const animate = (currentTime: number) => {
-      if (currentTime - lastTime >= frameInterval) {
-        setCurrentFrame(prev => {
-          const newFrame = (prev + 1) % donutFrames.length
-          // Log every 30 frames to avoid spam
-          if (newFrame % 30 === 0) {
-            console.log('🍩 ASCIIDonut: Frame', newFrame, '/', donutFrames.length)
-          }
-          return newFrame
-        })
-        lastTime = currentTime
+      // Convert array to string with proper line breaks
+      let output = ''
+      for (let k = 0; k < height; k++) {
+        output += b.slice(k * width, (k + 1) * width).join('') + '\n'
       }
-      animationRef.current = requestAnimationFrame(animate)
+      
+      donut.textContent = output
     }
 
-    animationRef.current = requestAnimationFrame(animate)
+    if (isVisible) {
+      intervalRef.current = setInterval(animate, 50)
+    }
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-        console.log('🍩 ASCIIDonut: Animation stopped')
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
     }
-  }, [isVisible, donutFrames])
+  }, [isVisible])
 
   // Intersection observer for performance
   useEffect(() => {
-    console.log('🍩 ASCIIDonut: Setting up intersection observer')
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const visible = entry.isIntersecting
-        console.log('🍩 ASCIIDonut: Visibility changed -', visible)
-        setIsVisible(visible)
+        setIsVisible(entry.isIntersecting)
       },
       { threshold: 0.1 }
     )
 
     if (canvasRef.current) {
       observer.observe(canvasRef.current)
-      console.log('🍩 ASCIIDonut: Observer attached to element')
-    } else {
-      console.log('🍩 ASCIIDonut: No element to observe yet')
     }
 
-    return () => {
-      observer.disconnect()
-      console.log('🍩 ASCIIDonut: Observer disconnected')
-    }
+    return () => observer.disconnect()
   }, [])
-
-  if (donutFrames.length === 0) {
-    return (
-      <div className="absolute inset-0 flex items-center justify-center opacity-20">
-        <div className="text-primary-400/50 text-xs font-mono">Loading...</div>
-      </div>
-    )
-  }
 
   return (
     <motion.pre
@@ -163,101 +96,102 @@ const ASCIIDonutComponent = () => {
       id="ascii-donut"
       style={{
         position: 'absolute',
-        fontFamily: 'Courier New, monospace',
-        fontSize: '12px',
-        color: 'rgba(255, 255, 255, 0.08)',
-        zIndex: 0, // Proper z-index for layering
-        pointerEvents: 'none',
-        top: '50%',
+        top: '20%',
         left: '50%',
-        transform: 'translate(-50%, -50%) translateZ(0)', 
+        transform: 'translateX(-50%)',
+        fontFamily: 'monospace',
+        fontSize: '13px',
+        color: 'rgba(255, 255, 255, 0.06)',
+        opacity: 0.06,
         whiteSpace: 'pre',
+        pointerEvents: 'none',
+        zIndex: 0,
         userSelect: 'none',
-        willChange: 'contents',
-        display: 'block',
-        width: 'auto',
-        height: 'auto',
-        lineHeight: '1'
+        willChange: 'contents'
       }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      {donutFrames[currentFrame]}
-    </motion.pre>
+      animate={{ opacity: 0.06 }}
+      transition={{ duration: 2 }}
+    />
   )
 }
 
-// Fallback static donut
+// Fallback static donut for low-power devices
 const StaticDonutFallback = () => (
-  <div className="ascii-donut-bg"
-       id="ascii-donut-static"
-       style={{ 
-         position: 'absolute',
-         fontFamily: 'Courier New, monospace',
-         fontSize: '12px',
-         color: 'rgba(255, 255, 255, 0.08)',
-         zIndex: 0, // Proper z-index
-         pointerEvents: 'none',
-         top: '50%',
-         left: '50%',
-         transform: 'translate(-50%, -50%)',
-         whiteSpace: 'pre',
-         userSelect: 'none',
-         display: 'block',
-         width: 'auto',
-         height: 'auto',
-         lineHeight: '1'
-       }}>
-    <pre>{`
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-     @@@@@@@@@@@@@@@@@@@@@@@@@@@@                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    @@@@@@@@@@@@@@@@@@@@@@@@@@@@                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-   @@@@@@@@@@@@@@@@@@@@@@@@@@@@                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@                      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- @@@@@@@@@@@@@@@@@@@@@@@@@@                          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- @@@@@@@@@@@@@@@@@@@@@@@@@@                          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@                            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@                            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@                            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- @@@@@@@@@@@@@@@@@@@@@@@@@@                          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- @@@@@@@@@@@@@@@@@@@@@@@@@@                          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@                      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-   @@@@@@@@@@@@@@@@@@@@@@@@@@@@                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    @@@@@@@@@@@@@@@@@@@@@@@@@@@@                  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-     @@@@@@@@@@@@@@@@@@@@@@@@@@@@                @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    `}</pre>
+  <div 
+    className="ascii-donut-bg"
+    id="ascii-donut-static"
+    style={{ 
+      position: 'absolute',
+      top: '20%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      fontFamily: 'monospace',
+      fontSize: '13px',
+      color: 'rgba(255, 255, 255, 0.06)',
+      opacity: 0.06,
+      whiteSpace: 'pre',
+      pointerEvents: 'none',
+      zIndex: 0,
+      userSelect: 'none'
+    }}
+  >
+    <pre>{`         ###@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@###
+       #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
+     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@@                @@@@@@@@@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@                  @@@@@@@@@@@@@@@@@@@@@@@@@
+ @@@@@@@@@@@@@@@@@@@@@@@@@@@                    @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@                      @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@                        @@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@                      @@@@@@@@@@@@@@@@@@@@@@@@@
+ @@@@@@@@@@@@@@@@@@@@@@@@@@@                    @@@@@@@@@@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@                  @@@@@@@@@@@@@@@@@@@@@@@@@
+   @@@@@@@@@@@@@@@@@@@@@@@@@@@@                @@@@@@@@@@@@@@@@@@@@@@@@
+     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
+         ###@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@###`}</pre>
   </div>
 )
 
 export const ASCIIDonut = () => {
   const [hasJavaScript, setHasJavaScript] = useState(false)
-  const [isLowPower, setIsLowPower] = useState(false)
+  const [isLowPower, setIsLowPower] = useState(true) // Default to low power
 
   useEffect(() => {
     setHasJavaScript(true)
-    // Check if in low-power mode
-    setIsLowPower(document.body.classList.contains('low-power-mode'))
+    
+    // Check if in low-power mode or mobile
+    const checkPowerMode = () => {
+      const isLowPowerMode = document.body.classList.contains('low-power-mode')
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      const isGPUAccelerated = (() => {
+        try {
+          const canvas = document.createElement('canvas')
+          const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+          return !!(gl && gl instanceof WebGLRenderingContext)
+        } catch {
+          return false
+        }
+      })()
+      
+      setIsLowPower(isLowPowerMode || isMobile || !isGPUAccelerated)
+    }
+    
+    checkPowerMode()
     
     // Listen for low-power mode changes
-    const observer = new MutationObserver(() => {
-      setIsLowPower(document.body.classList.contains('low-power-mode'))
-    })
+    const observer = new MutationObserver(checkPowerMode)
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
     
     return () => observer.disconnect()
   }, [])
 
-  // Always render animated donut unless in low-power mode
+  // Only show animated donut on high-end devices
   if (!hasJavaScript || isLowPower) {
     return <StaticDonutFallback />
   }

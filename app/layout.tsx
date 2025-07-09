@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { AudioProvider } from '@/components/providers/AudioProvider'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { LowPowerIndicator } from '@/components/ui/LowPowerIndicator'
+import { PhysicsCursor } from '@/components/ui/PhysicsCursor'
 import { VisualFallbackManager } from '@/components/utils/VisualFallbackManager'
 import { PerformanceTracker } from '@/components/utils/PerformanceTracker'
 import { ServiceWorkerRegistration } from '@/components/utils/ServiceWorkerRegistration'
@@ -53,6 +54,7 @@ export default function RootLayout({
         <PerformanceTracker />
         <ServiceWorkerRegistration />
         <LowPowerIndicator />
+        <PhysicsCursor />
         <ThemeProvider>
           <AudioProvider>
             <DynamicInteractiveCursorBackground />
