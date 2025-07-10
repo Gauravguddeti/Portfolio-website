@@ -10,9 +10,7 @@ import { VisualFallbackManager } from '@/components/utils/VisualFallbackManager'
 import { PerformanceTracker } from '@/components/utils/PerformanceTracker'
 import { ServiceWorkerRegistration } from '@/components/utils/ServiceWorkerRegistration'
 import { 
-  DynamicOptimizedCursor, 
-  DynamicBackgroundMusic, 
-  DynamicInteractiveCursorBackground 
+  DynamicBackgroundMusic 
 } from '@/components/utils/DynamicComponents'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -57,8 +55,6 @@ export default function RootLayout({
         <PhysicsCursor />
         <ThemeProvider>
           <AudioProvider>
-            <DynamicInteractiveCursorBackground />
-            <DynamicOptimizedCursor />
             <DynamicBackgroundMusic />
             <ThemeToggle />
             {children}

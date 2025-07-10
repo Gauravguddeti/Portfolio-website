@@ -30,23 +30,6 @@ body {
   html {
     scroll-behavior: smooth;
   }
-  
-  /* Custom cursor enabled by default for desktop */
-  * {
-    cursor: none !important;
-  }
-  
-  /* Only disable custom cursor on touch devices or low-power mode */
-  @media (hover: none) and (pointer: coarse) {
-    * {
-      cursor: auto !important;
-    }
-  }
-  
-  /* Disable custom cursor in low-power mode only */
-  .low-power-mode * {
-    cursor: auto !important;
-  }
 }
 
 @layer utilities {
