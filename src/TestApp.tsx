@@ -1,5 +1,3 @@
-import React from 'react'
-
 const TestApp = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-100 to-pink-100 p-8">

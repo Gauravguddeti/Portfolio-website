@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaLinkedin, FaFilePdf, FaBook, FaCode } from 'react-icons/fa'
+import { FaLinkedin, FaFilePdf } from 'react-icons/fa'
 
 interface BookshelfProps {
   isDarkMode: boolean
