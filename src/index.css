@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -48,6 +48,218 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(59, 130, 246, 0.8);
+}
+
+/* Enhanced Glitch Animation */
+.glitchy-text {
+  position: relative;
+  font-family: 'Orbitron', 'Inter', monospace;
+  text-shadow: 
+    0 0 10px #3b82f6,
+    0 0 20px #3b82f6,
+    0 0 30px #3b82f6;
+  animation: glitch-flicker 3s infinite;
+}
+
+.glitchy-text::before,
+.glitchy-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.glitchy-text::before {
+  animation: glitch-1 2s infinite;
+  color: #ff0040;
+  z-index: -1;
+}
+
+.glitchy-text::after {
+  animation: glitch-2 2s infinite;
+  color: #00ffff;
+  z-index: -2;
+}
+
+@keyframes glitch-flicker {
+  0%, 98% {
+    text-shadow: 
+      0 0 10px #3b82f6,
+      0 0 20px #3b82f6,
+      0 0 30px #3b82f6;
+  }
+  1%, 3% {
+    text-shadow: 
+      0 0 10px #ff0040,
+      0 0 20px #ff0040,
+      0 0 30px #ff0040;
+  }
+}
+
+@keyframes glitch-1 {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-2px, 1px);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(2px, -1px);
+  }
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-1px, 2px);
+  }
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(1px, -2px);
+  }
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-2px, 1px);
+  }
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(2px, -1px);
+  }
+}
+
+@keyframes glitch-2 {
+  0% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(1px, -1px);
+  }
+  20% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(1px, -2px);
+  }
+  60% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-1px, 2px);
+  }
+  80% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(2px, -1px);
+  }
+  100% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-2px, 1px);
+  }
+}
+
+/* Enhanced Typewriter Animation */
+.typing-animation {
+  display: inline-block;
+  overflow: hidden;
+  border-right: 3px solid #3b82f6;
+  white-space: nowrap;
+  animation: 
+    typewriter 2s steps(13, end) 0.5s forwards,
+    blink-cursor 0.75s step-end infinite;
+  width: 0;
+}
+
+.typing-animation.typing-complete {
+  border-right: none;
+  width: 100%;
+}
+
+@keyframes typewriter {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+@keyframes blink-cursor {
+  0%, 50% { border-color: #3b82f6; }
+  51%, 100% { border-color: transparent; }
+}
+
+/* Humorous Subtitle Animation */
+.typing-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  opacity: 0;
+  animation: fadeInTyping 1s ease-in 3s forwards;
+  color: #60a5fa;
+  font-style: italic;
+}
+
+@keyframes fadeInTyping {
+  0% { 
+    opacity: 0; 
+    transform: translateY(10px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #3b82f6 30%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: all 0.1s ease;
+  mix-blend-mode: screen;
+}
+
+.custom-cursor-outer {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #3b82f6;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0.7;
+  animation: cursor-pulse 2s infinite;
+}
+
+@keyframes cursor-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.custom-cursor-outer.hover {
+  transform: scale(1.5);
+  border-color: #8b5cf6;
+}
+
+.custom-cursor.hover {
+  transform: scale(1.2);
+  background: radial-gradient(circle, #8b5cf6 30%, transparent 70%);
+}
+
+/* Floating Elements Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Animations */

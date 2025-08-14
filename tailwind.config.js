@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         'sans': ['Inter', 'Nunito', 'Quicksand', 'system-ui', 'sans-serif'],
+        'orbitron': ['Orbitron', 'Inter', 'monospace'],
       },
       colors: {
         // Modern dark theme colors

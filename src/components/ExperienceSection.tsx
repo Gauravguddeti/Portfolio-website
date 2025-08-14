@@ -2,13 +2,13 @@ import { motion } from 'framer-motion'
 import { FaBriefcase, FaCalendarAlt, FaMapMarkerAlt, FaRocket, FaCode, FaBrain } from 'react-icons/fa'
 import { SiOpenai } from 'react-icons/si'
 
-const ExperienceSection = () => {
+const ExperienceSection: React.FC = () => {
   const experiences = [
     {
       id: 1,
       company: "ChatMaven",
       position: "AI Developer Intern",
-      duration: "December 2024 - Present",
+      duration: "July 2025 - Present",
       location: "Remote",
       type: "Internship",
       description: "Working on cutting-edge AI development projects, focusing on conversational AI and machine learning solutions.",
