@@ -9,7 +9,7 @@ import {
 import CustomCursor from './components/CustomCursor'
 import TypewriterWithGlitch from './components/TypewriterWithGlitch'
 import BackgroundJokes from './components/BackgroundJokes'
-import ArcReactor from './components/ArcReactor'
+import ArcReactor from './components/ArcReactorEnhanced'
 import CSSDonut from './components/CSSDonut'
 import RotatingOneLiners from './components/RotatingOneLiners'
 import ASCIIDonut from './components/ASCIIDonut'
@@ -211,6 +211,14 @@ function App() {
   }
 
   const projects = [
+    {
+      title: "ASL Vision",
+      description: "Real-time American Sign Language recognition system achieving 99.97% accuracy using PyTorch CNN, MediaPipe hand detection, and advanced image preprocessing. Features live camera processing at 30 FPS with intelligent prediction smoothing.",
+      github: "https://github.com/Gauravguddeti/ASLVision",
+      demo: "https://github.com/Gauravguddeti/ASLVision",
+      tech: ["PyTorch", "OpenCV", "MediaPipe", "Python", "Deep Learning", "Computer Vision"],
+      category: "AI/ML"
+    },
     {
       title: "SmartJeb E-commerce",
       description: "Modern e-commerce platform with React, featuring responsive design, shopping cart functionality, and seamless user experience for online retail.",

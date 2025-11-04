@@ -8,20 +8,20 @@ const ExperienceSection: React.FC = () => {
       id: 1,
       company: "ChatMaven",
       position: "AI Developer Intern",
-      duration: "July 2025 - Present",
+      duration: "July 15, 2025 - October 26, 2025",
       location: "Remote",
       type: "Internship",
-      description: "Working on cutting-edge AI development projects, focusing on conversational AI and machine learning solutions.",
+      description: "Worked on cutting-edge AI development projects, focusing on conversational AI and machine learning solutions.",
       highlights: [
-        "Developing AI-powered chatbot solutions using modern ML frameworks",
-        "Collaborating with cross-functional teams on AI product development",
-        "Implementing natural language processing features and optimizations",
-        "Contributing to scalable AI architecture and deployment strategies"
+        "Developed AI-powered chatbot solutions using modern ML frameworks",
+        "Collaborated with cross-functional teams on AI product development",
+        "Implemented natural language processing features and optimizations",
+        "Contributed to scalable AI architecture and deployment strategies"
       ],
       technologies: ["Python", "AI/ML", "NLP", "TensorFlow", "PyTorch"],
       icon: <SiOpenai className="text-2xl" />,
       color: "from-blue-500 to-cyan-500",
-      current: true
+      current: false
     }
   ]
 
