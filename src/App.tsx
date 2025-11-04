@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, AnimatePresence } from 'framer-motion'
+import Lenis from 'lenis'
+import { ParallaxProvider, Parallax } from 'react-scroll-parallax'
 import { 
   FaGithub, FaLinkedin, FaEnvelope, FaVolumeUp, FaVolumeMute, FaCode, 
   FaBrain, FaExternalLinkAlt, FaGraduationCap, FaRocket,
@@ -182,6 +184,31 @@ function App() {
   const [isTabVisible, setIsTabVisible] = useState(true)
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  // Initialize Lenis for smooth scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    })
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+    }
+  }, [])
+
   useEffect(() => {
     // Auto-play background music at low volume
     if (audioRef.current) {
@@ -266,10 +293,11 @@ function App() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-x-hidden">
-      <InteractiveBackground />
-      <CustomCursor />
-      <Navigation />
+    <ParallaxProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-x-hidden">
+        <InteractiveBackground />
+        <CustomCursor />
+        <Navigation />
       
       {/* Background Audio */}
       <audio ref={audioRef} loop>
@@ -287,11 +315,15 @@ function App() {
 
       {/* Hero Section */}
       <section id="home" className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-        <ASCIIDonut />
-        <CSSDonut />
+        <Parallax speed={-20} className="absolute inset-0">
+          <ASCIIDonut />
+        </Parallax>
+        <Parallax speed={-10}>
+          <CSSDonut />
+        </Parallax>
         <BackgroundJokes isTabVisible={isTabVisible} />
         
-        <div className="text-center z-10 max-w-4xl">
+        <Parallax speed={5} className="text-center z-10 max-w-4xl w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -363,14 +395,15 @@ function App() {
               Explore My Journey
             </a>
           </motion.div>
-        </div>
+        </Parallax>
       </section>
 
       {/* About This Human Section */}
       <section id="about" className="py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 50 }}
+        <Parallax speed={-5}>
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 
+              initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
           >
@@ -461,20 +494,22 @@ function App() {
             </motion.div>
           </div>
         </div>
+        </Parallax>
       </section>
 
       {/* Experience Section */}
       <section id="experience" className="py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-          >
-            Professional Journey
-          </motion.h2>
+        <Parallax speed={3}>
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
+            >
+              Professional Journey
+            </motion.h2>
           
-          <motion.div 
+            <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -543,11 +578,13 @@ function App() {
             </div>
           </motion.div>
         </div>
+        </Parallax>
       </section>
 
       {/* Tech Arsenal */}
       <section className="py-32 px-6 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
-        <div className="max-w-6xl mx-auto text-center">
+        <Parallax speed={-8}>
+          <div className="max-w-6xl mx-auto text-center">
           <motion.h2 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -572,15 +609,17 @@ function App() {
             <ArcReactor />
           </motion.div>
         </div>
+        </Parallax>
       </section>
 
       {/* Projects */}
       <section id="projects" className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
+        <Parallax speed={2}>
+          <div className="max-w-7xl mx-auto">
+            <motion.h2 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
           >
             Featured Projects
           </motion.h2>
@@ -679,14 +718,16 @@ function App() {
             </a>
           </motion.div>
         </div>
+        </Parallax>
       </section>
 
       {/* Contact */}
       <section id="contact" className="py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <Parallax speed={-3}>
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
             className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
           >
             Let's Build Something Amazing
@@ -844,6 +885,7 @@ function App() {
             </div>
           </motion.div>
         </div>
+        </Parallax>
       </section>
 
       {/* Footer */}
@@ -910,6 +952,7 @@ function App() {
         </div>
       </footer>
     </div>
+    </ParallaxProvider>
   )
 }
 
