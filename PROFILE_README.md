@@ -194,7 +194,7 @@ const currentStatus = {
 
 <div align="center">
   
-<img src="https://github-readme-stats.vercel.app/api?username=Gauravguddeti&show_icons=true&theme=radical&hide_border=false&count_private=true&include_all_commits=true&bg_color=0d1117&title_color=9d7cd8&icon_color=9d7cd8&text_color=c9d1d9&border_color=9d7cd8" alt="GitHub Stats" width="48%" />
+<img src="https://github-readme-stats.vercel.app/api?username=Gauravguddeti&show_icons=true&theme=radical&hide_border=false&bg_color=0d1117&title_color=9d7cd8&icon_color=9d7cd8&text_color=c9d1d9&border_color=9d7cd8" alt="GitHub Stats" width="48%" />
 <img src="https://streak-stats.demolab.com/?user=Gauravguddeti&theme=radical&hide_border=false&background=0d1117&ring=9d7cd8&fire=9d7cd8&currStreakLabel=9d7cd8&border=9d7cd8&stroke=9d7cd8&currStreakNum=c9d1d9&sideNums=c9d1d9&sideLabels=9d7cd8&dates=c9d1d9" alt="GitHub Streak" width="48%" />
 
 </div>
