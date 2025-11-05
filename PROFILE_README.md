@@ -194,15 +194,15 @@ const currentStatus = {
 
 <div align="center">
   
-<img src="https://github-readme-stats.vercel.app/api?username=Gauravguddeti&show_icons=true&theme=radical&hide_border=true&count_private=true&include_all_commits=true&bg_color=0d1117&title_color=9d7cd8&icon_color=9d7cd8&text_color=c9d1d9" alt="GitHub Stats" width="48%" />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Gauravguddeti&theme=radical&hide_border=true&background=0d1117&ring=9d7cd8&fire=9d7cd8&currStreakLabel=9d7cd8" alt="GitHub Streak" width="48%" />
+<img src="https://github-readme-stats.vercel.app/api?username=Gauravguddeti&show_icons=true&theme=radical&hide_border=false&count_private=true&include_all_commits=true&bg_color=0d1117&title_color=9d7cd8&icon_color=9d7cd8&text_color=c9d1d9&border_color=9d7cd8" alt="GitHub Stats" width="48%" />
+<img src="https://streak-stats.demolab.com/?user=Gauravguddeti&theme=radical&hide_border=false&background=0d1117&ring=9d7cd8&fire=9d7cd8&currStreakLabel=9d7cd8&border=9d7cd8&stroke=9d7cd8&currStreakNum=c9d1d9&sideNums=c9d1d9&sideLabels=9d7cd8&dates=c9d1d9" alt="GitHub Streak" width="48%" />
 
 </div>
 
 <div align="center">
   
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Gauravguddeti&layout=compact&theme=radical&hide_border=true&bg_color=0d1117&title_color=9d7cd8&text_color=c9d1d9&langs_count=8" alt="Top Languages" width="48%" />
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Gauravguddeti&theme=react-dark&hide_border=true&bg_color=0d1117&color=9d7cd8&line=9d7cd8&point=c9d1d9&area=true&area_color=9d7cd8" alt="Contribution Graph" width="48%" />
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Gauravguddeti&layout=compact&theme=radical&hide_border=false&bg_color=0d1117&title_color=9d7cd8&text_color=c9d1d9&border_color=9d7cd8&langs_count=8" alt="Top Languages" width="48%" />
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=Gauravguddeti&theme=react-dark&hide_border=false&bg_color=0d1117&color=9d7cd8&line=9d7cd8&point=c9d1d9&area=true&area_color=9d7cd8&custom_title=Contribution%20Graph" alt="Contribution Graph" width="48%" />
 
 </div>
 
@@ -212,7 +212,7 @@ const currentStatus = {
 
 <div align="center">
 
-[![trophy](https://github-profile-trophy.vercel.app/?username=Gauravguddeti&theme=radical&no-frame=true&no-bg=false&row=1&column=7&margin-w=15&margin-h=15)](https://github.com/ryo-ma/github-profile-trophy)
+<img src="https://github-profile-trophy.vercel.app/?username=Gauravguddeti&theme=radical&no-frame=false&no-bg=false&margin-w=4&margin-h=4&row=2&column=4&title=Commits,Stars,Followers,Repositories,PullRequest,Issues,Experience,Reviews" alt="GitHub Trophies" />
 
 </div>
 
@@ -251,20 +251,6 @@ const currentStatus = {
 
 <div align="center">
 
-### 🎮 Gaming Stats (Where I actually have impressive numbers)
-
-**Valorant National Champion 🏆 | Competitive Player | Team Leader & Shot Caller**
-
-*Yes, I can carry your Valorant rank AND debug your code. Multi-talented like that.* 😎
-
-![Valorant](https://media.giphy.com/media/3oKIPic2BnoVZkRla8/giphy.gif)
-
-</div>
-
----
-
-<div align="center">
-
 ### 💼 Open for Opportunities (aka hire me pls)
 
 ```javascript
@@ -290,8 +276,6 @@ const lookingFor = {
 ---
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12&height=100&section=footer" width="100%">
-
-![Visitor Count](https://profile-counter.glitch.me/Gauravguddeti/count.svg)
 
 </div>
 
