@@ -239,6 +239,23 @@ function App() {
 
   const projects = [
     {
+      title: "RateMyProf India",
+      description: "Comprehensive web platform enabling Indian college students to anonymously rate and review professors and colleges. Built with Next.js 14, FastAPI, PostgreSQL, featuring immersive 3D WebGL animations with React Three Fiber, real-time search, dark mode, and advanced moderation system. Deployed on production serving 1000+ potential users.",
+      github: "https://github.com/NihaallX/ratemyprof",
+      demo: "https://ratemyprof.me",
+      tech: ["Next.js 14", "React 18", "TypeScript", "FastAPI", "PostgreSQL", "Supabase", "Three.js", "Tailwind CSS", "Framer Motion"],
+      category: "Full-Stack",
+      featured: true,
+      highlights: [
+        "3D WebGL landing page with React Three Fiber",
+        "Anonymous review system with JWT authentication",
+        "Real-time search with auto-suggestions",
+        "Admin moderation panel & college comparison tool",
+        "40% bundle size reduction via dynamic imports",
+        "Full dark mode implementation"
+      ]
+    },
+    {
       title: "ASL Vision",
       description: "Real-time American Sign Language recognition system achieving 99.97% accuracy using PyTorch CNN, MediaPipe hand detection, and advanced image preprocessing. Features live camera processing at 30 FPS with intelligent prediction smoothing.",
       github: "https://github.com/Gauravguddeti/ASLVision",

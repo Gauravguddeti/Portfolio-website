@@ -1,11 +1,35 @@
 import { motion } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt, FaCode, FaBrain, FaDesktop } from 'react-icons/fa'
-import { SiReact, SiTensorflow, SiPython, SiJavascript, SiMongodb, SiFirebase, SiStreamlit } from 'react-icons/si'
+import { SiReact, SiTensorflow, SiPython, SiJavascript, SiMongodb, SiFirebase, SiStreamlit, SiNextdotjs, SiFastapi, SiPostgresql } from 'react-icons/si'
 
 const ProjectShowcase = () => {
   const projects = [
     {
       id: 1,
+      title: "RateMyProf India",
+      description: "A comprehensive web platform enabling Indian college students to anonymously rate and review professors and colleges. Built with Next.js 14, FastAPI, and PostgreSQL, featuring 3D WebGL animations with React Three Fiber. Deployed on production with 1000+ potential users.",
+      image: "/api/placeholder/400/250",
+      technologies: ["Next.js 14", "React 18", "TypeScript", "FastAPI", "PostgreSQL", "Tailwind CSS", "React Three Fiber", "Framer Motion"],
+      icons: [<SiNextdotjs />, <SiFastapi />, <SiPostgresql />],
+      githubUrl: "https://github.com/NihaallX/ratemyprof",
+      liveUrl: "https://ratemyprof.me",
+      category: "Full Stack",
+      featured: true,
+      highlights: [
+        "1000+ potential users on production",
+        "3D WebGL landing page with React Three Fiber",
+        "Anonymous review system with JWT authentication",
+        "Real-time search with auto-suggestions",
+        "Admin moderation panel & college comparison tool",
+        "40% bundle size reduction through optimization"
+      ]
+    },
+    {
+      id: 2,
+      title: "SmartJeb E-commerce Platform",
+    },
+    {
+      id: 2,
       title: "SmartJeb E-commerce Platform",
       description: "A comprehensive e-commerce solution with modern UI/UX, shopping cart functionality, and secure payment integration. Built with React and responsive design principles.",
       image: "/api/placeholder/400/250",
@@ -17,7 +41,7 @@ const ProjectShowcase = () => {
       featured: true
     },
     {
-      id: 2,
+      id: 3,
       title: "AI Crop Disease Analyzer",
       description: "Intelligent crop disease detection system using computer vision and deep learning. Helps farmers identify plant diseases early with high accuracy predictions.",
       image: "/api/placeholder/400/250",
@@ -29,7 +53,7 @@ const ProjectShowcase = () => {
       featured: true
     },
     {
-      id: 3,
+      id: 4,
       title: "Portfolio Website",
       description: "A modern, responsive portfolio website showcasing my projects and skills. Built with React, TypeScript, and Framer Motion for smooth animations.",
       image: "/api/placeholder/400/250",
@@ -41,7 +65,7 @@ const ProjectShowcase = () => {
       featured: false
     },
     {
-      id: 4,
+      id: 5,
       title: "Task Management App",
       description: "A full-stack task management application with real-time updates, user authentication, and collaborative features. Perfect for team productivity.",
       image: "/api/placeholder/400/250",
@@ -53,7 +77,7 @@ const ProjectShowcase = () => {
       featured: false
     },
     {
-      id: 5,
+      id: 6,
       title: "Weather Analytics Dashboard",
       description: "Interactive weather data visualization dashboard with predictive analytics and historical trends. Built with modern data visualization libraries.",
       image: "/api/placeholder/400/250",
@@ -65,7 +89,7 @@ const ProjectShowcase = () => {
       featured: false
     },
     {
-      id: 6,
+      id: 7,
       title: "Firebase Chat App",
       description: "Real-time chat application with user authentication, message encryption, and file sharing capabilities. Built with modern web technologies.",
       image: "/api/placeholder/400/250",
@@ -155,6 +179,21 @@ const ProjectShowcase = () => {
                   <p className="text-gray-300 mb-4 leading-relaxed">
                     {project.description}
                   </p>
+                  
+                  {/* Highlights for RateMyProf */}
+                  {'highlights' in project && (
+                    <div className="mb-4 space-y-2">
+                      <h4 className="text-sm font-semibold text-blue-400 mb-2">Key Highlights:</h4>
+                      <ul className="space-y-1">
+                        {(project as any).highlights.slice(0, 4).map((highlight: string, idx: number) => (
+                          <li key={idx} className="text-sm text-gray-400 flex items-start">
+                            <span className="text-blue-400 mr-2">✓</span>
+                            <span>{highlight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
