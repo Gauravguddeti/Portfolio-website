@@ -12,6 +12,7 @@ import CustomCursor from './components/CustomCursor'
 import TypewriterWithGlitch from './components/TypewriterWithGlitch'
 import BackgroundJokes from './components/BackgroundJokes'
 import ArcReactor from './components/ArcReactorEnhanced'
+import ArcReactorSphere from './components/ArcReactorSphere'
 import CSSDonut from './components/CSSDonut'
 import RotatingOneLiners from './components/RotatingOneLiners'
 import ASCIIDonut from './components/ASCIIDonut'
@@ -623,7 +624,9 @@ function App() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <ArcReactor />
+            {/* Original Arc Reactor - commented out, replaced with 3D Sphere version */}
+            {/* <ArcReactor /> */}
+            <ArcReactorSphere />
           </motion.div>
         </div>
         </Parallax>
