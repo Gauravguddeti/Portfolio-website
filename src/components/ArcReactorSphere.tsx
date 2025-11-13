@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import IconSphereGrid, { type IconData } from '@/components/ui/icon-sphere'
+import IconSphereGrid, { type IconData } from './ui/icon-sphere'
 import { 
   SiReact, SiPython, SiJavascript, SiTypescript, SiNodedotjs, SiMongodb, 
   SiMysql, SiFirebase, SiTailwindcss, SiTensorflow, SiPytorch, SiStreamlit,

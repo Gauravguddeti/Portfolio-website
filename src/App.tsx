@@ -11,7 +11,6 @@ import {
 import CustomCursor from './components/CustomCursor'
 import TypewriterWithGlitch from './components/TypewriterWithGlitch'
 import BackgroundJokes from './components/BackgroundJokes'
-import ArcReactor from './components/ArcReactorEnhanced'
 import ArcReactorSphere from './components/ArcReactorSphere'
 import CSSDonut from './components/CSSDonut'
 import RotatingOneLiners from './components/RotatingOneLiners'

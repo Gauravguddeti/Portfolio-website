@@ -18,8 +18,8 @@ const TypewriterWithGlitch = ({
   const [displayText, setDisplayText] = useState('')
   const [isTypingComplete, setIsTypingComplete] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const glitchTimeoutRef = useRef<number | null>(null)
-  const rotateTimeoutRef = useRef<number | null>(null)
+  const glitchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const rotateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const originalTextRef = useRef('')
 
   // Use either single text or array of texts
@@ -49,7 +49,7 @@ const TypewriterWithGlitch = ({
             setIsTypingComplete(false)
             setDisplayText('')
             setCurrentTextIndex((prev) => (prev + 1) % textArray.length)
-          }, rotateDelay) as unknown as number
+          }, rotateDelay)
         }
       }
     }, speed)

@@ -16,7 +16,6 @@ const ProjectShowcase = () => {
       category: "Full Stack",
       featured: true,
       highlights: [
-        "1000+ potential users on production",
         "3D WebGL landing page with React Three Fiber",
         "Anonymous review system with JWT authentication",
         "Real-time search with auto-suggestions",
@@ -136,7 +135,7 @@ const ProjectShowcase = () => {
                 <div className="relative overflow-hidden">
                   <div className="w-full h-48 bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
                     <div className="flex space-x-4 text-4xl text-white/50">
-                      {project.icons.map((icon, iconIndex) => (
+                      {project.icons?.map((icon, iconIndex) => (
                         <span key={iconIndex}>{icon}</span>
                       ))}
                     </div>
@@ -196,7 +195,7 @@ const ProjectShowcase = () => {
                   )}
                   
                   <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
+                    {project.technologies?.map((tech) => (
                       <span
                         key={tech}
                         className="px-3 py-1 bg-slate-700 text-gray-300 rounded-full text-sm"
@@ -227,7 +226,7 @@ const ProjectShowcase = () => {
                 <div className="relative overflow-hidden">
                   <div className="w-full h-32 bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center">
                     <div className="flex space-x-2 text-2xl text-white/50">
-                      {project.icons.slice(0, 2).map((icon, iconIndex) => (
+                      {project.icons?.slice(0, 2).map((icon, iconIndex) => (
                         <span key={iconIndex}>{icon}</span>
                       ))}
                     </div>
@@ -267,11 +266,11 @@ const ProjectShowcase = () => {
                     {project.title}
                   </h3>
                   <p className="text-gray-300 text-sm mb-3 leading-relaxed">
-                    {project.description.substring(0, 100)}...
+                    {project.description?.substring(0, 100)}...
                   </p>
                   
                   <div className="flex flex-wrap gap-1">
-                    {project.technologies.slice(0, 3).map((tech) => (
+                    {project.technologies?.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
                         className="px-2 py-1 bg-slate-700 text-gray-300 rounded-full text-xs"
@@ -279,7 +278,7 @@ const ProjectShowcase = () => {
                         {tech}
                       </span>
                     ))}
-                    {project.technologies.length > 3 && (
+                    {project.technologies && project.technologies.length > 3 && (
                       <span className="px-2 py-1 bg-slate-700 text-gray-300 rounded-full text-xs">
                         +{project.technologies.length - 3}
                       </span>
