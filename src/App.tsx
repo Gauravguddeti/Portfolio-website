@@ -210,25 +210,50 @@ function App() {
   }, [])
 
   useEffect(() => {
-    // Auto-play background music at low volume
-    if (audioRef.current) {
-      audioRef.current.volume = 0.25 // 25% volume
-      audioRef.current.play().catch(() => {
-        // Handle autoplay policy
-      })
+    // Auto-play background music at low volume with user interaction
+    const startAudio = () => {
+      if (audioRef.current && !audioRef.current.paused) return
+      
+      if (audioRef.current) {
+        audioRef.current.volume = 0.25 // 25% volume
+        audioRef.current.play().catch((error) => {
+          console.log('Audio autoplay prevented:', error)
+        })
+      }
     }
+
+    // Try to play immediately
+    startAudio()
+
+    // Also try on first user interaction
+    const enableAudio = () => {
+      startAudio()
+      document.removeEventListener('click', enableAudio)
+      document.removeEventListener('keydown', enableAudio)
+      document.removeEventListener('touchstart', enableAudio)
+    }
+
+    document.addEventListener('click', enableAudio)
+    document.addEventListener('keydown', enableAudio)
+    document.addEventListener('touchstart', enableAudio)
 
     // Handle visibility change for power optimization
     const handleVisibilityChange = () => {
       setIsTabVisible(!document.hidden)
+      if (!document.hidden && audioRef.current && !isMuted) {
+        audioRef.current.play().catch(() => {})
+      }
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
+      document.removeEventListener('click', enableAudio)
+      document.removeEventListener('keydown', enableAudio)
+      document.removeEventListener('touchstart', enableAudio)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [])
+  }, [isMuted])
 
   const toggleMute = () => {
     if (audioRef.current) {
@@ -851,8 +876,8 @@ function App() {
                 
                 {/* Download Resume Button */}
                 <motion.a
-                  href="/GauravGuddeti_Resume.docx"
-                  download="GauravGuddeti_Resume.docx"
+                  href="/GauravAmolGuddeti_CSE-AIML_resume.pdf"
+                  download="GauravGuddeti_Resume.pdf"
                   className="flex items-center justify-center space-x-3 w-full p-4 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl text-white font-semibold transition-all duration-300 hover-lift group"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
