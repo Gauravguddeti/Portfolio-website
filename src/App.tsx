@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, AnimatePresence } from 'framer-motion'
 import Lenis from 'lenis'
-import { ParallaxProvider, Parallax } from 'react-scroll-parallax'
 import { 
   FaGithub, FaLinkedin, FaEnvelope, FaVolumeUp, FaVolumeMute, FaCode, 
-  FaBrain, FaExternalLinkAlt, FaGraduationCap, FaRocket,
+  FaBrain, FaGraduationCap, FaRocket,
   FaLaptopCode, FaDatabase, FaCloud, FaBars, FaTimes, FaDownload
 } from 'react-icons/fa'
 
@@ -16,6 +15,16 @@ import CSSDonut from './components/CSSDonut'
 import RotatingOneLiners from './components/RotatingOneLiners'
 import ASCIIDonut from './components/ASCIIDonut'
 import InteractiveBackground from './components/InteractiveBackground'
+import Preloader from './components/Preloader'
+import MagneticButton from './components/MagneticButton'
+import MagneticLink from './components/MagneticLink'
+import ProjectCard from './components/ProjectCard'
+import Hero3DCards from './components/Hero3DCards'
+import ScrollProgressIndicator from './components/ScrollProgressIndicator'
+import Section3DTransition from './components/Section3DTransition'
+import PerformanceStats from './components/PerformanceStats'
+import { fadeIn, staggerFadeIn, parallax, slideIn, scaleIn, cleanupScrollTriggers } from './utils/gsapAnimations'
+import { usePerformanceMonitor, useDeviceCapability } from './hooks/usePerformanceMonitor'
 import './App.css'
 
 // Navigation Component
@@ -35,39 +44,32 @@ const Navigation = () => {
     <motion.nav
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-lg border-b border-blue-400/20"
+      className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-lg border-b border-[#60D5FA]/20"
     >
       <motion.div 
-        className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-500"
-        style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
+        className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#60D5FA] via-[#456882] to-[#234C6A]"
+        style={{ scaleX: scrollYProgress, transformOrigin: "0%", willChange: 'transform' }}
       />
       
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <motion.div 
-            className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-            whileHover={{ scale: 1.05 }}
+          <MagneticLink
+            href="#home"
+            className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#60D5FA] via-[#456882] to-[#234C6A]"
           >
             GAURAV.DEV
-          </motion.div>
+          </MagneticLink>
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <motion.a
+              <MagneticLink
                 key={item.name}
                 href={item.href}
-                className="text-gray-300 hover:text-blue-400 transition-colors relative"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                className="text-gray-300 hover:text-[#60D5FA] transition-colors"
               >
                 {item.name}
-                <motion.div
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-400"
-                  whileHover={{ width: "100%" }}
-                  transition={{ duration: 0.2 }}
-                />
-              </motion.a>
+              </MagneticLink>
             ))}
           </div>
           
@@ -93,7 +95,7 @@ const Navigation = () => {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="block text-gray-300 hover:text-blue-400 transition-colors"
+                  className="block text-gray-300 hover:text-[#60D5FA] transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
@@ -182,7 +184,83 @@ const ContactForm = () => {
 function App() {
   const [isMuted, setIsMuted] = useState(false)
   const [isTabVisible, setIsTabVisible] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const audioRef = useRef<HTMLAudioElement>(null)
+  
+  // Performance monitoring
+  const { fps } = usePerformanceMonitor()
+  const { isMobile, isLowEnd } = useDeviceCapability()
+
+  // Handle preloader completion
+  const handlePreloaderComplete = () => {
+    setIsLoading(false)
+    // Start music immediately after loading
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.volume = 0.15
+        audioRef.current.play().catch(() => {
+          // User interaction required - music will start on first click
+          console.log('Music requires user interaction')
+        })
+      }
+    }, 100)
+  }
+
+  // Log performance (dev only)
+  useEffect(() => {
+    console.log(`FPS: ${fps}, Mobile: ${isMobile}, Low-end: ${isLowEnd}`)
+  }, [fps, isMobile, isLowEnd])
+
+  // Initialize GSAP ScrollTrigger animations
+  useEffect(() => {
+    if (isLoading) return
+
+    // Wait for DOM to be ready
+    const initAnimations = setTimeout(() => {
+      // Hero section parallax
+      parallax('.hero-bg-layer-1', { y: 150, scrub: 1.5 })
+      parallax('.hero-bg-layer-2', { y: 80, scrub: 1 })
+
+      // Section fade-ins
+      fadeIn('.about-section', { y: 60, duration: 1.2 })
+      fadeIn('.experience-section', { y: 60, duration: 1.2 })
+      fadeIn('.tech-section', { y: 60, duration: 1.2 })
+      fadeIn('.contact-section', { y: 60, duration: 1.2 })
+
+      // Project cards stagger
+      staggerFadeIn('.project-card', {
+        stagger: 0.15,
+        y: 50,
+        duration: 0.8,
+      })
+
+      // Stats animation
+      staggerFadeIn('.stat-item', {
+        stagger: 0.1,
+        y: 30,
+        duration: 0.6,
+      })
+
+      // Tech stack items
+      staggerFadeIn('.tech-item', {
+        stagger: 0.05,
+        y: 20,
+        duration: 0.5,
+      })
+
+      // Contact cards
+      slideIn('.contact-card-left', { x: -50, duration: 0.8 })
+      slideIn('.contact-card-right', { x: 50, duration: 0.8 })
+
+      // Scale animations for icons
+      scaleIn('.icon-scale', { scale: 0.5, duration: 0.6 })
+    }, 100)
+
+    return () => {
+      clearTimeout(initAnimations)
+      cleanupScrollTriggers()
+    }
+  }, [isLoading])
 
   // Initialize Lenis for smooth scrolling
   useEffect(() => {
@@ -335,59 +413,80 @@ function App() {
   ]
 
   return (
-    <ParallaxProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-x-hidden">
+    <>
+      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
+      
+      {/* CustomCursor must be at root level to stay on top */}
+      <CustomCursor />
+      
+      <div 
+        className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 text-white relative overflow-x-hidden"
+        style={{ 
+          perspective: isMobile ? '800px' : '1500px',
+          perspectiveOrigin: '50% 50%',
+          opacity: isLoading ? 0 : 1,
+          visibility: isLoading ? 'hidden' : 'visible',
+          transition: 'opacity 0.6s ease-in-out',
+        }}
+      >
         <InteractiveBackground />
-        <CustomCursor />
         <Navigation />
+        <ScrollProgressIndicator />
+        <PerformanceStats fps={fps} />
       
       {/* Background Audio */}
       <audio ref={audioRef} loop>
         <source src="/background-music.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Audio Control */}
-      <button
-        onClick={toggleMute}
-        className="fixed top-20 right-6 z-50 p-3 bg-slate-800/80 border border-blue-400/30 rounded-full hover:bg-slate-700/80 transition-colors backdrop-blur-sm"
-        title={isMuted ? "Unmute" : "Mute"}
-      >
-        {isMuted ? <FaVolumeMute className="text-red-400" /> : <FaVolumeUp className="text-blue-400" />}
-      </button>
+      {/* Audio Control - Always visible on scroll */}
+      <div className="fixed top-20 right-6 z-[99999]">
+        <MagneticButton
+          onClick={toggleMute}
+          className="p-3 bg-[#1B3C53]/90 border border-[#60D5FA]/40 rounded-full hover:bg-[#234C6A]/90 transition-colors backdrop-blur-md shadow-lg"
+          strength={0.15}
+        >
+          {isMuted ? <FaVolumeMute className="text-[#D2C1B6]" /> : <FaVolumeUp className="text-[#60D5FA]" />}
+        </MagneticButton>
+      </div>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-        <Parallax speed={-20} className="absolute inset-0">
+      <section id="home" className="relative min-h-screen flex items-center justify-center px-6 pt-20 snap-start">
+        <div className="hero-bg-layer-1 absolute inset-0 z-0 pointer-events-none">
           <ASCIIDonut />
-        </Parallax>
-        <Parallax speed={-10}>
+        </div>
+        <div className="hero-bg-layer-2 absolute inset-0 z-0 pointer-events-none">
           <CSSDonut />
-        </Parallax>
-        <BackgroundJokes isTabVisible={isTabVisible} />
+        </div>
+        <div className="absolute inset-0 z-[5] pointer-events-none">
+          <BackgroundJokes isTabVisible={isTabVisible} />
+        </div>
         
-        <Parallax speed={5} className="text-center z-10 max-w-4xl w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="mb-8"
-          >
-            <h1 className="text-5xl md:text-8xl font-bold text-white">
-              <TypewriterWithGlitch text="GAURAV GUDDETI" />
-            </h1>
-            <RotatingOneLiners />
-          </motion.div>
+        <div className="relative z-10 flex items-center justify-center" style={{ width: '100%' }}>
+          <Hero3DCards isLoaded={!isLoading}>
+            <div className="text-center z-10 max-w-4xl w-full mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="mb-8"
+            >
+              <h1 className="text-5xl md:text-8xl font-bold text-white">
+                <TypewriterWithGlitch text="GAURAV GUDDETI" />
+              </h1>
+              <RotatingOneLiners />
+            </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            transition={{ duration: 1, delay: 0.5 }}
             className="mb-6"
           >
-            <h2 className="text-xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 font-semibold mb-2">
+            <h2 className="text-xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-[#60D5FA] to-[#456882] font-semibold mb-2">
               Engineer of Tomorrow's Intelligent Tools
             </h2>
-            <p className="text-lg text-blue-300">
+            <p className="text-lg text-[#60D5FA]">
               Full-Stack Developer | AI/ML Enthusiast
             </p>
           </motion.div>
@@ -396,69 +495,107 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.9 }}
-            className="flex justify-center space-x-8 text-3xl"
+            className="flex justify-center items-center space-x-8 text-3xl mb-6"
           >
-            <motion.a 
-              href="https://github.com/Gauravguddeti" 
-              className="hover:text-blue-400 transition-colors"
-              whileHover={{ scale: 1.2, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
+            <a
+              href="https://github.com/Gauravguddeti"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-[#60D5FA] transition-all duration-300 inline-block"
+              style={{ cursor: 'pointer' }}
+              onClick={(e) => console.log('GitHub clicked', e)}
+              onMouseEnter={() => console.log('GitHub hover')}
             >
-              <FaGithub />
-            </motion.a>
-            <motion.a 
-              href="https://linkedin.com/in/gaurav-guddeti-a2359827b" 
-              className="hover:text-blue-400 transition-colors"
-              whileHover={{ scale: 1.2, rotate: -5 }}
-              whileTap={{ scale: 0.9 }}
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaGithub className="drop-shadow-lg" />
+              </motion.div>
+            </a>
+            <a
+              href="https://linkedin.com/in/gaurav-guddeti-a2359827b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-[#60D5FA] transition-all duration-300 inline-block"
+              style={{ cursor: 'pointer' }}
+              onClick={(e) => console.log('LinkedIn clicked', e)}
+              onMouseEnter={() => console.log('LinkedIn hover')}
             >
-              <FaLinkedin />
-            </motion.a>
-            <motion.a 
-              href="mailto:guddetigaurav1@gmail.com" 
-              className="hover:text-blue-400 transition-colors"
-              whileHover={{ scale: 1.2, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaLinkedin className="drop-shadow-lg" />
+              </motion.div>
+            </a>
+            <a
+              href="mailto:guddetigaurav1@gmail.com"
+              className="text-gray-300 hover:text-[#60D5FA] transition-all duration-300 inline-block"
+              style={{ cursor: 'pointer' }}
+              onClick={(e) => console.log('Email clicked', e)}
+              onMouseEnter={() => console.log('Email hover')}
             >
-              <FaEnvelope />
-            </motion.a>
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FaEnvelope className="drop-shadow-lg" />
+              </motion.div>
+            </a>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="mt-12"
+            className="mt-12 text-center"
           >
-            <a 
-              href="#about" 
-              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            <motion.button
+              onClick={(e) => {
+                console.log('Button clicked!', e);
+                const aboutSection = document.getElementById('about');
+                if (aboutSection) {
+                  aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              onMouseEnter={() => console.log('Button hover')}
+              type="button"
+              className="px-8 py-4 bg-gradient-to-r from-[#234C6A] to-[#456882] rounded-full font-semibold hover:from-[#1B3C53] hover:to-[#234C6A] transition-all shadow-lg hover:shadow-xl text-white inline-block"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(96, 213, 250, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              style={{ cursor: 'pointer' }}
             >
               Explore My Journey
-            </a>
+            </motion.button>
           </motion.div>
-        </Parallax>
+          </div>
+        </Hero3DCards>
+        
+        </div>
       </section>
 
       {/* About This Human Section */}
-      <section id="about" className="py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30">
-        <Parallax speed={-5}>
-          <div className="max-w-6xl mx-auto">
-            <motion.h2 
-              initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
+      <section id="about" className="about-section py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30 snap-start">
+        <div className="max-w-6xl mx-auto">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0, margin: "0px 0px -80% 0px" }}
+          className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-[#60D5FA] to-[#456882]"
+        >
+          About This Human
+        </motion.h2>
+        
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            viewport={{ once: true, amount: 0, margin: "0px 0px -80% 0px" }}
+            className="space-y-6"
           >
-            About This Human
-          </motion.h2>
-          
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
               <div className="prose prose-lg text-gray-300">
                 <p className="text-lg leading-relaxed mb-6">
                   Hey there! I'm <span className="text-blue-400 font-semibold">Gaurav</span>, a passionate 3rd-year Computer Science student 
@@ -483,13 +620,13 @@ function App() {
               </div>
 
               <div className="grid grid-cols-2 gap-6 mt-8">
-                <div className="text-center p-4 bg-slate-800/50 rounded-xl border border-blue-400/30">
-                  <FaGraduationCap className="text-3xl text-blue-400 mx-auto mb-2" />
+                <div className="stat-item text-center p-4 bg-slate-800/50 rounded-xl border border-blue-400/30">
+                  <FaGraduationCap className="icon-scale text-3xl text-blue-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Education</h3>
                   <p className="text-sm text-gray-400">Computer Science</p>
                 </div>
-                <div className="text-center p-4 bg-slate-800/50 rounded-xl border border-blue-400/30">
-                  <FaRocket className="text-3xl text-purple-400 mx-auto mb-2" />
+                <div className="stat-item text-center p-4 bg-slate-800/50 rounded-xl border border-blue-400/30">
+                  <FaRocket className="icon-scale text-3xl text-purple-400 mx-auto mb-2" />
                   <h3 className="font-semibold">Experience</h3>
                   <p className="text-sm text-gray-400">AI Developer Intern</p>
                 </div>
@@ -497,27 +634,28 @@ function App() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              viewport={{ once: true, amount: 0, margin: "0px 0px -80% 0px" }}
               className="space-y-6"
             >
               <div className="bg-slate-800/50 rounded-2xl p-8 border border-blue-400/30">
                 <h3 className="text-2xl font-semibold mb-6 text-blue-400">Quick Stats</h3>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
+                  <div className="stat-item flex justify-between items-center">
                     <span>Lines of Code Written</span>
                     <span className="text-blue-400 font-bold">50,000+</span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="stat-item flex justify-between items-center">
                     <span>Projects Completed</span>
                     <span className="text-purple-400 font-bold">15+</span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="stat-item flex justify-between items-center">
                     <span>Technologies Mastered</span>
                     <span className="text-green-400 font-bold">20+</span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="stat-item flex justify-between items-center">
                     <span>Coffee Cups Consumed</span>
                     <span className="text-yellow-400 font-bold">∞</span>
                   </div>
@@ -536,26 +674,22 @@ function App() {
             </motion.div>
           </div>
         </div>
-        </Parallax>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-32 px-6">
-        <Parallax speed={3}>
+      <Section3DTransition intensity="bold" direction="left">
+      <section id="experience" className="experience-section py-32 px-6 snap-start">
           <div className="max-w-6xl mx-auto">
-            <motion.h2 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-            >
-              Professional Journey
-            </motion.h2>
+          <h2 className="text-5xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+            Professional Journey
+          </h2>
           
             <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-gradient-to-r from-slate-800/80 to-blue-900/40 rounded-3xl p-12 border border-blue-400/30 hover:border-blue-400/60 transition-all duration-500 hover-lift"
+            className="bg-gradient-to-r from-slate-800/80 to-blue-900/40 rounded-3xl p-12 border border-blue-400/30 hover:border-blue-400/60 transition-all duration-500 hover-lift gpu-accelerated"
           >
             <div className="flex items-start space-x-8">
               <motion.div 
@@ -608,7 +742,7 @@ function App() {
                     {['Python', 'RAG', 'LangGraph', 'IVR Systems', 'AI/ML', 'NLP', 'Conversational AI'].map((tech) => (
                       <motion.span 
                         key={tech} 
-                        className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 rounded-full text-sm font-medium border border-blue-400/30 hover:border-blue-400/60 transition-all cursor-default"
+                        className="tech-item px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 rounded-full text-sm font-medium border border-blue-400/30 hover:border-blue-400/60 transition-all cursor-default"
                         whileHover={{ scale: 1.05 }}
                       >
                         {tech}
@@ -620,25 +754,22 @@ function App() {
             </div>
           </motion.div>
         </div>
-        </Parallax>
       </section>
+    </Section3DTransition>
 
       {/* Tech Arsenal */}
-      <section className="py-32 px-6 bg-gradient-to-r from-blue-900/20 to-purple-900/20">
-        <Parallax speed={-8}>
-          <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-          >
+      <Section3DTransition intensity="bold" direction="up">
+      <section className="tech-section py-32 px-6 bg-gradient-to-r from-[#1B3C53]/20 to-[#234C6A]/20 snap-start overflow-visible">
+        <div className="max-w-6xl mx-auto text-center overflow-visible">
+          <h2 className="text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-[#60D5FA] to-[#456882]">
             Tech Arsenal
-          </motion.h2>
+          </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-gray-300 mb-16 max-w-2xl mx-auto"
+            className="text-xl text-[#D2C1B6] mb-16 max-w-2xl mx-auto"
           >
             My technological toolkit spanning frontend, backend, AI/ML, and mobile development
           </motion.p>
@@ -646,30 +777,27 @@ function App() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.3 }}
+            className="gpu-accelerated"
           >
-            {/* Original Arc Reactor - commented out, replaced with 3D Sphere version */}
-            {/* <ArcReactor /> */}
             <ArcReactorSphere />
           </motion.div>
         </div>
-        </Parallax>
       </section>
+    </Section3DTransition>
 
       {/* Projects */}
-      <section id="projects" className="py-32 px-6">
-        <Parallax speed={2}>
-          <div className="max-w-7xl mx-auto">
-            <motion.h2 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-          >
+      <Section3DTransition intensity="bold" direction="right">
+      <section id="projects" className="py-32 px-6 snap-start">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
             Featured Projects
-          </motion.h2>
+          </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto"
           >
@@ -678,107 +806,42 @@ function App() {
           
           <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {projects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-2xl p-8 border border-blue-400/30 hover:border-blue-400/60 transition-all group hover-lift backdrop-blur-sm"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <span className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 rounded-full text-sm font-medium border border-blue-400/30">
-                    {project.category}
-                  </span>
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 10 }}
-                    className="w-10 h-10 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full flex items-center justify-center border border-blue-400/30"
-                  >
-                    {project.category === 'AI/ML' ? <FaBrain className="text-blue-400" /> : 
-                     project.category === 'Full-Stack' ? <FaLaptopCode className="text-purple-400" /> : 
-                     <FaCode className="text-green-400" />}
-                  </motion.div>
-                </div>
-
-                <h3 className="text-2xl font-semibold mb-4 text-white group-hover:text-blue-400 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">{project.description}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tech.map((tech) => (
-                    <span 
-                      key={tech} 
-                      className="px-3 py-1 bg-slate-700/50 text-gray-300 rounded-full text-sm border border-gray-600/30"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="flex space-x-4">
-                  <motion.a
-                    href={project.github}
-                    className={`flex items-center space-x-2 px-4 py-2 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg transition-colors border border-gray-600/30 hover:border-gray-500/50 ${project.demo ? 'flex-1' : 'w-full'} justify-center`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaGithub />
-                    <span>Code</span>
-                  </motion.a>
-                  {project.demo && (
-                    <motion.a
-                      href={project.demo}
-                      className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg transition-colors flex-1 justify-center"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaExternalLinkAlt />
-                      <span>Live Demo</span>
-                    </motion.a>
-                  )}
-                </div>
-              </motion.div>
+              <ProjectCard key={project.title} {...project} index={index} />
             ))}
           </div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.5 }}
             className="text-center mt-16"
           >
-            <a 
-              href="https://github.com/Gauravguddeti" 
-              className="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 rounded-full font-semibold transition-all transform hover:scale-105 border border-blue-400/30 hover:border-blue-400/60"
+            <MagneticButton 
+              href="https://github.com/Gauravguddeti"
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 rounded-full font-semibold transition-all border border-blue-400/30 hover:border-blue-400/60 text-white"
             >
               <FaGithub className="text-xl" />
               <span>View All Projects on GitHub</span>
-            </a>
+            </MagneticButton>
           </motion.div>
         </div>
-        </Parallax>
       </section>
+    </Section3DTransition>
 
       {/* Contact */}
-      <section id="contact" className="py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30">
-        <Parallax speed={-3}>
-          <div className="max-w-6xl mx-auto">
-            <motion.h2 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-          >
+      <Section3DTransition intensity="bold" direction="up">
+      <section id="contact" className="contact-section py-32 px-6 bg-gradient-to-r from-slate-800/50 to-blue-900/30 snap-start">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-5xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
             Let's Build Something Amazing
-          </motion.h2>
+          </h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto"
           >
@@ -790,15 +853,15 @@ function App() {
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="space-y-8"
+              className="contact-card-left space-y-8"
             >
               <div className="space-y-6">
-                <motion.a
+                <MagneticButton
                   href="mailto:guddetigaurav1@gmail.com"
-                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group w-full text-left"
+                  strength={0.25}
                 >
                   <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <FaEnvelope className="text-xl text-white" />
@@ -807,15 +870,14 @@ function App() {
                     <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">Email</h3>
                     <p className="text-gray-400">guddetigaurav1@gmail.com</p>
                   </div>
-                </motion.a>
+                </MagneticButton>
 
-                <motion.a
+                <MagneticButton
                   href="https://linkedin.com/in/gaurav-guddeti-a2359827b"
-                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group w-full text-left"
+                  strength={0.25}
                 >
                   <div className="w-14 h-14 bg-gradient-to-r from-blue-600 to-blue-800 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <FaLinkedin className="text-xl text-white" />
@@ -824,15 +886,14 @@ function App() {
                     <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">LinkedIn</h3>
                     <p className="text-gray-400">Connect professionally</p>
                   </div>
-                </motion.a>
+                </MagneticButton>
 
-                <motion.a
+                <MagneticButton
                   href="https://github.com/Gauravguddeti"
-                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="flex items-center space-x-4 p-6 bg-slate-800/80 border border-blue-400/30 rounded-2xl hover:border-blue-400/60 transition-all hover-lift group w-full text-left"
+                  strength={0.25}
                 >
                   <div className="w-14 h-14 bg-gradient-to-r from-gray-700 to-gray-900 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <FaGithub className="text-xl text-white" />
@@ -841,7 +902,7 @@ function App() {
                     <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">GitHub</h3>
                     <p className="text-gray-400">View my repositories</p>
                   </div>
-                </motion.a>
+                </MagneticButton>
               </div>
 
               <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl p-8 border border-blue-400/30">
@@ -869,22 +930,22 @@ function App() {
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
+              className="contact-card-right"
             >
               <div className="bg-slate-800/80 rounded-2xl p-8 border border-blue-400/30">
                 <h3 className="text-2xl font-semibold mb-6 text-white">Send a Message</h3>
                 
                 {/* Download Resume Button */}
-                <motion.a
-                  href="/GauravAmolGuddeti_CSE-AIML_resume.pdf"
-                  download="GauravGuddeti_Resume.pdf"
-                  className="flex items-center justify-center space-x-3 w-full p-4 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl text-white font-semibold transition-all duration-300 hover-lift group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <a
+                  href="/GAURAV_GUDDETI_CSE-AIML-RESUME.pdf"
+                  download="Gaurav_Guddeti_Resume.pdf"
+                  className="flex items-center justify-center space-x-3 w-full p-4 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 group"
                 >
                   <FaDownload className="text-lg group-hover:animate-bounce" />
                   <span>Download Resume</span>
-                </motion.a>
+                </a>
                 
                 <ContactForm />
               </div>
@@ -894,43 +955,38 @@ function App() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.5 }}
             className="text-center mt-16"
           >
             <div className="flex justify-center space-x-8 text-4xl">
-              <motion.a 
-                href="https://github.com/Gauravguddeti" 
-                className="text-gray-400 hover:text-blue-400 transition-colors"
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.9 }}
+              <MagneticLink 
+                href="https://github.com/Gauravguddeti"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <FaGithub />
-              </motion.a>
-              <motion.a 
-                href="https://linkedin.com/in/gaurav-guddeti-a2359827b" 
-                className="text-gray-400 hover:text-blue-400 transition-colors"
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.9 }}
+              </MagneticLink>
+              <MagneticLink 
+                href="https://linkedin.com/in/gaurav-guddeti-a2359827b"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <FaLinkedin />
-              </motion.a>
-              <motion.a 
-                href="mailto:guddetigaurav1@gmail.com" 
+              </MagneticLink>
+              <MagneticLink 
+                href="mailto:guddetigaurav1@gmail.com"
                 className="text-gray-400 hover:text-blue-400 transition-colors"
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.9 }}
               >
                 <FaEnvelope />
-              </motion.a>
+              </MagneticLink>
             </div>
           </motion.div>
         </div>
-        </Parallax>
       </section>
+    </Section3DTransition>
 
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-blue-400/30 bg-slate-900/50">
@@ -996,7 +1052,7 @@ function App() {
         </div>
       </footer>
     </div>
-    </ParallaxProvider>
+    </>
   )
 }
 

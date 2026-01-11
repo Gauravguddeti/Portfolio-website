@@ -25,6 +25,20 @@ const CustomCursor = () => {
       return
     }
 
+    // Initialize cursor position and opacity
+    if (innerCursor.current && outerCursor.current) {
+      console.log('CustomCursor: Initializing cursor elements')
+      innerCursor.current.style.opacity = '1'
+      outerCursor.current.style.opacity = '1'
+      // Set initial position to center of screen
+      const centerX = window.innerWidth / 2
+      const centerY = window.innerHeight / 2
+      positionRef.current = { x: centerX, y: centerY }
+      innerPositionRef.current = { x: centerX, y: centerY }
+      outerPositionRef.current = { x: centerX, y: centerY }
+      console.log('CustomCursor: Cursor initialized at', centerX, centerY)
+    }
+
     let isMoving = false
     let animationPaused = false
 
@@ -106,13 +120,18 @@ const CustomCursor = () => {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '10px',
-          height: '10px',
-          backgroundColor: '#3b82f6',
+          width: '12px',
+          height: '12px',
+          backgroundColor: '#60D5FA',
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 9999,
+          zIndex: 2147483647,
           willChange: 'transform',
+          mixBlendMode: 'normal',
+          isolation: 'isolate',
+          opacity: 1,
+          boxShadow: '0 0 15px rgba(96, 213, 250, 1), 0 0 30px rgba(96, 213, 250, 0.5)',
+          border: '2px solid #ffffff',
         }}
       />
       
@@ -126,11 +145,15 @@ const CustomCursor = () => {
           left: 0,
           width: '40px',
           height: '40px',
-          border: '2px solid rgba(59, 130, 246, 0.6)',
+          border: '3px solid rgba(96, 213, 250, 1)',
           borderRadius: '50%',
           pointerEvents: 'none',
-          zIndex: 9998,
+          zIndex: 2147483646,
           willChange: 'transform',
+          mixBlendMode: 'normal',
+          isolation: 'isolate',
+          opacity: 1,
+          boxShadow: '0 0 10px rgba(96, 213, 250, 0.5)',
         }}
       />
     </>

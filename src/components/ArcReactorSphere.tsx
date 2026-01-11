@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useRef } from 'react'
 import IconSphereGrid, { type IconData } from './ui/icon-sphere'
 import { 
   SiReact, SiPython, SiJavascript, SiTypescript, SiNodedotjs, SiMongodb, 
@@ -15,6 +16,8 @@ import { FaJava } from 'react-icons/fa'
  */
 
 const ArcReactorSphere = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
   // Tech stack with icons and colors
   const techIcons: IconData[] = [
     { id: 'react', name: 'React', icon: SiReact, color: '#61DAFB' },
@@ -38,51 +41,89 @@ const ArcReactorSphere = () => {
   ]
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center py-12">
-      {/* Section Title */}
-      <motion.h2
-        className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
+    <div ref={containerRef} className="relative w-full max-w-3xl mx-auto flex flex-col items-center justify-center py-12 overflow-hidden">
+      {/* Dramatic Orbit Rings - Responsive with transform-based centering */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+        style={{ perspective: '1000px' }}
       >
-        Tech Universe
-      </motion.h2>
+        {/* Outer ring - 70% of container */}
+        <motion.div 
+          className="absolute border-2 border-[#60D5FA]/20 rounded-full"
+          style={{
+            width: 'min(70vw, 340px)',
+            height: 'min(70vw, 340px)',
+            maxWidth: '340px',
+            maxHeight: '340px',
+            willChange: 'transform',
+          }}
+          animate={{
+            rotate: 360,
+          }}
+          transition={{
+            rotate: { duration: 30, repeat: Infinity, ease: "linear" },
+          }}
+        />
+        {/* Middle ring - 55% of container */}
+        <motion.div 
+          className="absolute border-2 border-[#456882]/20 rounded-full"
+          style={{
+            width: 'min(55vw, 270px)',
+            height: 'min(55vw, 270px)',
+            maxWidth: '270px',
+            maxHeight: '270px',
+            willChange: 'transform',
+          }}
+          animate={{
+            rotate: -360,
+          }}
+          transition={{
+            rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+          }}
+        />
+        {/* Inner ring - 40% of container */}
+        <motion.div 
+          className="absolute border-2 border-[#234C6A]/20 rounded-full"
+          style={{
+            width: 'min(40vw, 200px)',
+            height: 'min(40vw, 200px)',
+            maxWidth: '200px',
+            maxHeight: '200px',
+            willChange: 'transform',
+          }}
+          animate={{
+            rotate: 360,
+          }}
+          transition={{
+            rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+          }}
+        />
+      </div>
 
-      {/* Subtitle */}
-      <motion.p
-        className="text-gray-400 text-center mb-12 max-w-2xl px-4"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        Explore my technology stack in 3D. Drag to rotate, hover to discover each technology.
-      </motion.p>
-
-      {/* 3D Sphere Container */}
+      {/* 3D Sphere Container - scroll transforms only on sphere */}
       <motion.div
         className="relative"
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        {/* Arc Reactor Core (center glow) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
+        {/* Arc Reactor Core (center glow) - Enhanced */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none"
+      >
           <motion.div 
-            className="w-20 h-20 rounded-full"
+            className="w-20 h-20 md:w-24 md:h-24 rounded-full"
             style={{
-              background: 'radial-gradient(circle, #3b82f6 0%, #1e40af 70%, #1e3a8a 100%)',
-              boxShadow: '0 0 30px rgba(59, 130, 246, 0.6), inset 0 0 30px rgba(59, 130, 246, 0.3)',
+              background: 'radial-gradient(circle, #60D5FA 0%, #234C6A 70%, #1B3C53 100%)',
+              boxShadow: '0 0 30px rgba(96, 213, 250, 0.6), inset 0 0 30px rgba(96, 213, 250, 0.3)',
             }}
             animate={{
               boxShadow: [
-                '0 0 30px rgba(59, 130, 246, 0.6), inset 0 0 30px rgba(59, 130, 246, 0.3)',
-                '0 0 50px rgba(59, 130, 246, 0.9), inset 0 0 40px rgba(59, 130, 246, 0.5)',
-                '0 0 30px rgba(59, 130, 246, 0.6), inset 0 0 30px rgba(59, 130, 246, 0.3)',
+                '0 0 30px rgba(96, 213, 250, 0.6), inset 0 0 30px rgba(96, 213, 250, 0.3)',
+                '0 0 80px rgba(96, 213, 250, 1), inset 0 0 50px rgba(96, 213, 250, 0.7)',
+                '0 0 30px rgba(96, 213, 250, 0.6), inset 0 0 30px rgba(96, 213, 250, 0.3)',
               ],
+              scale: [1, 1.1, 1],
             }}
             transition={{
               duration: 2,
@@ -91,27 +132,33 @@ const ArcReactorSphere = () => {
             }}
           >
             {/* Inner glow */}
-            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-blue-300 to-blue-600 opacity-80" />
+            <div className="absolute inset-2 rounded-full bg-gradient-to-br from-[#60D5FA] to-[#234C6A] opacity-80" />
+            {/* Energy pulses */}
+            <motion.div 
+              className="absolute inset-0 rounded-full bg-[#60D5FA]/20"
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.5, 0, 0.5],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeOut",
+              }}
+            />
           </motion.div>
-        </div>
-
-        {/* Orbit rings (subtle guides) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
-          <div className="w-[350px] h-[350px] border border-cyan-500/10 rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] border border-purple-500/10 rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] border border-blue-500/10 rounded-full" />
         </div>
 
         {/* 3D Sphere with Tech Icons */}
         <div className="relative z-10">
           <IconSphereGrid
             icons={techIcons}
-            containerSize={600}
-            sphereRadius={250}
+            containerSize={400}
+            sphereRadius={150}
             dragSensitivity={0.8}
             momentumDecay={0.96}
             maxRotationSpeed={6}
-            baseIconSize={70}
+            baseIconSize={50}
             hoverScale={1.3}
             perspective={1000}
             autoRotate={true}

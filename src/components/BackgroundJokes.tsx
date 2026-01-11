@@ -102,7 +102,7 @@ const BackgroundJokes = ({ isTabVisible = true }: BackgroundJokesProps) => {
     <div
       ref={containerRef}
       className="absolute inset-0 pointer-events-none overflow-hidden"
-      style={{ zIndex: 1 }}
+      style={{ zIndex: 5 }}
     >
       <AnimatePresence>
         {jokes.map((joke) => (

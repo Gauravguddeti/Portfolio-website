@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-blue: #3b82f6;
-  --dark-blue: #1e40af;
-  --light-blue: #60a5fa;
-  --purple-primary: #8b5cf6;
-  --purple-light: #a78bfa;
-  --blue-glow: #3b82f6;
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
+  /* New color palette from image */
+  --primary-blue: #234C6A;
+  --dark-blue: #1B3C53;
+  --light-blue: #456882;
+  --accent-tan: #D2C1B6;
+  --accent-cyan: #60D5FA;
+  --blue-glow: #60D5FA;
+  --bg-primary: #0f1419;
+  --bg-secondary: #1B3C53;
   --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
+  --text-secondary: #D2C1B6;
 }
 
 * {
@@ -23,11 +24,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Smooth scroll snap */
+body {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 80px;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--bg-primary) 0%, #1e3a8a 30%, #581c87 70%, var(--bg-secondary) 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1B3C53 30%, #234C6A 70%, #456882 100%);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -48,9 +60,31 @@ body {
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-/* Hide default cursor on desktop only */
+/* Custom Cursor Always Visible */
+.cursor-inner,
+.cursor-outer {
+  position: fixed !important;
+  pointer-events: none !important;
+  z-index: 2147483647 !important;
+  will-change: transform !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+}
+
+/* Prevent sections from creating stacking contexts that block cursor */
+section {
+  isolation: auto !important;
+  transform-style: flat !important;
+}
+
+/* Hide default cursor on desktop only - with proper exceptions for interactive elements */
 @media (pointer: fine) {
-  body, body * {
+  body {
+    cursor: none !important;
+  }
+  
+  /* Hide cursor for non-interactive elements */
+  body *:not(a):not(button):not(input):not(textarea):not(select):not([role="button"]):not([onclick]):not(a *):not(button *) {
     cursor: none !important;
   }
 }
@@ -80,6 +114,72 @@ body {
   .cursor-outer {
     display: none !important;
   }
+}
+
+/* GPU-accelerated animations - PERFORMANCE OPTIMIZED */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Remove will-change after animation completes (add via JS) */
+.gpu-accelerated-complete {
+  will-change: auto;
+}
+
+/* Project cards with 3D transforms */
+.project-card {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* 3D Perspective container */
+.perspective-container {
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+/* 3D Section transforms */
+.section-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for low performance */
+@media (prefers-reduced-motion: reduce) {
+  .perspective-container {
+    perspective: none;
+  }
+  
+  .section-3d {
+    transform: none !important;
+  }
+}
+
+/* Smooth scroll performance */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 /* Reduced power mode */
