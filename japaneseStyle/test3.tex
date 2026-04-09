@@ -1,0 +1,27 @@
+﻿\documentclass[10pt]{article}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\definecolor{navy}{HTML}{1a2e4a}
+\setlength{\arrayrulewidth}{0.4pt}
+\begin{document}
+Test with tabular:
+\begin{tabular}{|p{3cm}|p{6cm}|}
+\hline
+\rowcolor{navy}\multicolumn{2}{|l|}{\color{white}\textbf{Header}} \\
+\hline
+Cell 1 & Cell 2 \\
+\hline
+\end{tabular}
+
+\medskip
+Test tabularx with cellcolor instead of rowcolor:
+\begin{tabularx}{\linewidth}{|p{3cm}|X|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor{navy}\color{white}\textbf{Header}} \\
+\hline
+Cell 1 & Cell 2 \\
+\hline
+\end{tabularx}
+\end{document}

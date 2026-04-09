@@ -1,0 +1,23 @@
+﻿\documentclass[10pt]{article}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\definecolor{navy}{HTML}{1a2e4a}
+\definecolor{ltgray}{HTML}{f0f0f0}
+\begin{document}
+Test 1: multicolumn bypassing p column
+\begin{tabular}{|p{5cm}|}
+\hline
+\multicolumn{1}{|c|}{\cellcolor{navy}\color{white} Header} \\
+\hline
+Content \\
+\hline
+\end{tabular}
+
+Test 2: standard l column with cellcolor
+\begin{tabular}{|>{\columncolor{ltgray}}l|p{5cm}|}
+\hline
+Label & Content \\
+\hline
+\end{tabular}
+\end{document}

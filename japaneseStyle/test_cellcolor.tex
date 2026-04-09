@@ -1,0 +1,20 @@
+\documentclass[10pt]{article}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\definecolor{navy}{HTML}{1a2e4a}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlength{\extrarowheight}{1.5pt}
+\begin{document}
+\begin{tabular}{|p{5cm}|p{5cm}|}
+\hline
+\multicolumn{2}{|p{10.2cm}|}{\cellcolor{navy}\color{white}\textbf{Header via cellcolor}} \\
+\hline
+A & B \\
+\hline
+\multicolumn{2}{|p{10.2cm}|}{\cellcolor{navy}\color{white}\textbf{Second header}} \\
+\hline
+C & D \\
+\hline
+\end{tabular}
+\end{document}

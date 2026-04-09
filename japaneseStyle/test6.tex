@@ -1,0 +1,24 @@
+﻿\documentclass[10pt]{article}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\definecolor{navy}{HTML}{1a2e4a}
+\begin{document}
+Test single column rowcolor:
+\begin{tabular}{|p{5cm}|}
+\hline
+\rowcolor{navy}\color{white} Header \\
+\hline
+Content \\
+\hline
+\end{tabular}
+
+Test multi column with l:
+\begin{tabular}{|p{3cm}|p{3cm}|}
+\hline
+\rowcolor{navy}\multicolumn{2}{|l|}{\color{white} Header} \\
+\hline
+A & B \\
+\hline
+\end{tabular}
+\end{document}

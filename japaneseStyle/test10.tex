@@ -1,0 +1,13 @@
+﻿\documentclass[10pt]{article}
+\usepackage[table]{xcolor}
+\definecolor{navy}{HTML}{1a2e4a}
+\begin{document}
+\begin{tabular}{|l|l|}
+\hline
+\rowcolor{navy}\multicolumn{2}{|l|}{\color{white} Header} \\
+\hline
+\begin{minipage}[t]{3cm} Label that wraps \end{minipage} &
+\begin{minipage}[t]{6cm} Description that wraps to multiple lines to test if this works inside an l column! \end{minipage} \\
+\hline
+\end{tabular}
+\end{document}

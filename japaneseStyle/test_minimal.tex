@@ -1,0 +1,36 @@
+﻿\documentclass[8.5pt,a4paper]{article}
+\usepackage[top=0.75cm,bottom=0.75cm,left=1.2cm,right=1.2cm]{geometry}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\definecolor{navy}{HTML}{1a2e4a}
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{4pt}
+\setlength{\arrayrulewidth}{0.4pt}
+\setlength{\extrarowheight}{1.5pt}
+\pagestyle{empty}
+\begin{document}
+\noindent\begin{tabular}{|p{146mm}|p{35mm}|}
+\hline
+\rowcolor{navy}%
+\color{white}\large\textbf{Header Title} &
+\color{white}\footnotesize Date: 14 March 2026 \\
+\hline
+\end{tabular}
+
+\vspace{2pt}
+
+\noindent\begin{tabular}{|p{28mm}|p{108mm}|}
+\hline
+\rowcolor{navy}%
+\multicolumn{2}{|p{140mm}|}{\color{white}\textbf{\small Personal Info}} \\
+\hline
+Label 1 & Content 1 \\
+\hline
+Label 2 & Content 2 \\
+\hline
+\end{tabular}
+\end{document}
