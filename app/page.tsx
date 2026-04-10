@@ -525,7 +525,7 @@ export default function Home() {
         <footer id="contact">
           <div className="container">
             <div className="footer-cta">
-              <a href="mailto:guddetigaurav1@gmail.com">LET&apos;S — TALK</a>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=guddetigaurav1@gmail.com" target="_blank" rel="noopener noreferrer">LET&apos;S — TALK</a>
             </div>
             <div className="divider" />
 

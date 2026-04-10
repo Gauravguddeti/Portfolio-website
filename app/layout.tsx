@@ -7,6 +7,8 @@ import "./globals.css"
 const syne = Syne({ subsets: ["latin"], variable: "--font-syne" })
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
+import type { Viewport } from "next"
+
 export const metadata: Metadata = {
   title: "Gaurav Guddeti — Portfolio",
   description: "Full-Stack Developer & AI/ML Engineer. Building intelligent tools and elegant interfaces.",
@@ -16,6 +18,13 @@ export const metadata: Metadata = {
     ],
     apple: "/favicon.png",
   },
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({

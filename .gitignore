@@ -26,3 +26,5 @@ dist-ssr
 # Exclude unwanted folders
 2nd/
 2nd
+
+.vercel
