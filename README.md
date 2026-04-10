@@ -1,4 +1,4 @@
-# Modern Portfolio Website
+# Portfolio Website
 
 A sleek, professional portfolio website showcasing my skills, projects, and experience as a full-stack developer and AI enthusiast. Built with React, TypeScript, and modern design principles.
 
